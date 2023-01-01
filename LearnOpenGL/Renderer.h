@@ -16,13 +16,13 @@ namespace Pink
 class Pink::Renderer
 {
 private:
-	int width;
-	int height;
-	bool wireframeMode;
-
 	UserInterface* userInterface;
 	GLFWwindow* window;
 
+	int width;
+	int height;
+	bool wireframeMode;
+	
 	unsigned int createVertexShader();
 	unsigned int createFragmentShader();
 	unsigned int createShaderProgram();

@@ -243,8 +243,9 @@ void Pink::Renderer::render()
 		glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Tell ImGui we're rendering a new frame.
+		// Tell ImGui we're rendering a new frame and to style the UI.
 		userInterface->newFrame();
+		userInterface->style();
 
 		// Draw commands.
 		glUseProgram(shaderProgram);

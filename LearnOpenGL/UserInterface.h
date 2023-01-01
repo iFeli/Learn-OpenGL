@@ -10,7 +10,12 @@ namespace Pink
 class Pink::UserInterface
 {
 private:
+	GLFWwindow* const window;
+
 	bool wireframeMode;
+
+	void drawInfo();
+	void drawOpenGLSettings();
 
 public:
 	UserInterface(GLFWwindow* const window);
@@ -21,4 +26,5 @@ public:
 	void draw();
 	void newFrame();
 	void render();
+	void style();
 };
