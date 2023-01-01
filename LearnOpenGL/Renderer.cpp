@@ -1,5 +1,9 @@
 #include "Renderer.h"
 
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_impl_glfw.h>
+#include <ImGui/imgui_impl_opengl3.h>
+
 #include <iostream>
 
 /*
@@ -42,6 +46,13 @@ Pink::Renderer::Renderer(int width, int height) :
 
 		throw;
 	}
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 /*
@@ -230,14 +241,33 @@ void Pink::Renderer::render()
 		glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		// Tell ImGui we're rendering a new frame.
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		// Draw commands.
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		// After rendering our frame in OpenGL, create our ImGui UI.
+		ImGui::Begin("ImGui Window");
+		ImGui::Text("Hello ImGui!");
+		ImGui::End();
+
+		// Render ImGui UI.
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// Check and call events, swap buffers.
 		glfwSwapBuffers(glfwWindow);
 		glfwPollEvents();
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 }
