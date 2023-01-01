@@ -1,8 +1,6 @@
 #include "Renderer.h"
 
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_impl_glfw.h>
-#include <ImGui/imgui_impl_opengl3.h>
+#include "UserInterface.h"
 
 #include <iostream>
 
@@ -15,20 +13,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 /*
 * 
-* Constructor
+* Constructor & Destructor
 * 
 */
 Pink::Renderer::Renderer(int width, int height) :
-	width(width), height(height), glfwWindow(nullptr), wireframeMode(false)
+	width(width), height(height), userInterface(nullptr), window(nullptr), wireframeMode(false)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfwWindow = glfwCreateWindow(width, height, "Learn OpenGL", NULL, NULL);
+	window = glfwCreateWindow(width, height, "Learn OpenGL", NULL, NULL);
 
-	if (glfwWindow == nullptr)
+	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW window." << std::endl;
 
@@ -37,8 +35,8 @@ Pink::Renderer::Renderer(int width, int height) :
 		throw;
 	}
 
-	glfwMakeContextCurrent(glfwWindow);
-	glfwSetFramebufferSizeCallback(glfwWindow, framebuffer_size_callback);
+	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -47,12 +45,14 @@ Pink::Renderer::Renderer(int width, int height) :
 		throw;
 	}
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	userInterface = new UserInterface(window);
+}
+
+Pink::Renderer::~Renderer()
+{
+	glfwTerminate();
+
+	delete userInterface;
 }
 
 /*
@@ -159,18 +159,17 @@ unsigned int Pink::Renderer::createShaderProgram()
 	return shaderProgram;
 }
 
-void Pink::Renderer::processInput(GLFWwindow* window)
+void Pink::Renderer::processInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
-	else if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-	{
-		wireframeMode = !wireframeMode;
+}
 
-		glPolygonMode(GL_FRONT_AND_BACK, wireframeMode ? GL_LINE : GL_FILL);
-	}
+void Pink::Renderer::processUI()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, userInterface->getWireframeMode() ? GL_LINE : GL_FILL);
 }
 
 /*
@@ -232,19 +231,20 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	while (!glfwWindowShouldClose(glfwWindow))
+	while (!glfwWindowShouldClose(window))
 	{
 		// Input.
-		processInput(glfwWindow);
+		processInput();
+
+		// UI updates.
+		processUI();
 
 		// Render commands.
 		glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Tell ImGui we're rendering a new frame.
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		userInterface->newFrame();
 
 		// Draw commands.
 		glUseProgram(shaderProgram);
@@ -252,24 +252,15 @@ void Pink::Renderer::render()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
-		ImGui::Begin("ImGui Window");
-		ImGui::Text("Hello ImGui!");
-		ImGui::End();
+		userInterface->draw();
 
 		// Render ImGui UI.
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		userInterface->render();
 
 		// Check and call events, swap buffers.
-		glfwSwapBuffers(glfwWindow);
+		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-
-	glfwTerminate();
 }
 
 /*

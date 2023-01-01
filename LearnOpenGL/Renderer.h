@@ -6,6 +6,8 @@
 #include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "UserInterface.h"
+
 namespace Pink
 {
 	class Renderer;
@@ -18,16 +20,19 @@ private:
 	int height;
 	bool wireframeMode;
 
-	GLFWwindow* glfwWindow = nullptr;
+	UserInterface* userInterface;
+	GLFWwindow* window;
 
 	unsigned int createVertexShader();
 	unsigned int createFragmentShader();
 	unsigned int createShaderProgram();
 
-	void processInput(GLFWwindow* window);
+	void processInput();
+	void processUI();
 
 public:
 	Renderer(int width, int height);
+	~Renderer();
 
 	void render();
 };
