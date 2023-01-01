@@ -6,25 +6,28 @@
 #include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
-
 namespace Pink
 {
-	class Window;
+	class Renderer;
 }
 
-class Pink::Window
+class Pink::Renderer
 {
 private:
 	int width;
 	int height;
+	bool wireframeMode;
 
 	GLFWwindow* glfwWindow = nullptr;
+
+	unsigned int createVertexShader();
+	unsigned int createFragmentShader();
+	unsigned int createShaderProgram();
 
 	void processInput(GLFWwindow* window);
 
 public:
-	Window(int width, int height);
+	Renderer(int width, int height);
 
 	void render();
 };
