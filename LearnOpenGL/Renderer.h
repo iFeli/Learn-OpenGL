@@ -30,7 +30,7 @@ private:
 	unsigned int createShaderProgram();
 
 	void processInput();
-	void processUI();
+	void processUI(const unsigned int shaderProgram);
 
 public:
 	Renderer(int width, int height);

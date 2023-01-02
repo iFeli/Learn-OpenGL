@@ -101,9 +101,11 @@ unsigned int Pink::Renderer::createFragmentShader()
 		"\n"
 		"out vec4 fragmentColor;"
 		"\n"
+		"uniform vec4 customColor;"
+		"\n"
 		"void main()\n"
 		"{\n"
-		"    fragmentColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
+		"    fragmentColor = customColor;"
 		"}\0";
 
 	const unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -169,9 +171,13 @@ void Pink::Renderer::processInput()
 	}
 }
 
-void Pink::Renderer::processUI()
+void Pink::Renderer::processUI(const unsigned int shaderProgram)
 {
 	glPolygonMode(GL_FRONT_AND_BACK, settings->wireframeMode ? GL_LINE : GL_FILL);
+
+	int vertexColorLocation = glGetUniformLocation(shaderProgram, "customColor");
+	ImColor fillColor = settings->fillColor;
+	glUniform4f(vertexColorLocation, fillColor.Value.x, fillColor.Value.y, fillColor.Value.z, fillColor.Value.w);
 }
 
 /*
@@ -250,7 +256,7 @@ void Pink::Renderer::render()
 		processInput();
 
 		// UI updates.
-		processUI();
+		processUI(shaderProgram);
 
 		// Render commands.
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -261,6 +267,7 @@ void Pink::Renderer::render()
 
 		// Draw commands.
 		glUseProgram(shaderProgram);
+
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
