@@ -6,6 +6,7 @@
 #include <GLAD/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Settings.h"
 #include "UserInterface.h"
 
 namespace Pink
@@ -16,12 +17,13 @@ namespace Pink
 class Pink::Renderer
 {
 private:
-	UserInterface* userInterface;
-	GLFWwindow* window;
+	Settings* settings;
+	UserInterface* userInterface = nullptr;
+	GLFWwindow* window = nullptr;
 
 	int width;
 	int height;
-	bool wireframeMode;
+	bool wireframeMode = false;
 	
 	unsigned int createVertexShader();
 	unsigned int createFragmentShader();
@@ -34,5 +36,6 @@ public:
 	Renderer(int width, int height);
 	~Renderer();
 
+	int maximumVertexAttributes();
 	void render();
 };

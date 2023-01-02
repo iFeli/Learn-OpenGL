@@ -3,14 +3,15 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <string>
 
 /*
 *
 * Constructor & Destructor
 *
 */
-Pink::UserInterface::UserInterface(GLFWwindow* const window) :
-	window(window), wireframeMode(false)
+Pink::UserInterface::UserInterface(Settings* const settings, GLFWwindow* const window) :
+	settings(settings), window(window)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -38,7 +39,7 @@ void Pink::UserInterface::drawInfo()
 	int glfwHeight;
 	glfwGetWindowSize(window, &glfwWidth, &glfwHeight);
 
-	int imGuiWidth = 150;
+	float imGuiWidth = 250;
 
 	ImGui::SetNextWindowPos(ImVec2(glfwWidth - imGuiWidth, 0));
 	ImGui::SetNextWindowSize(ImVec2(imGuiWidth, 80));
@@ -46,7 +47,12 @@ void Pink::UserInterface::drawInfo()
 
 	if (ImGui::Begin("Info"))
 	{
+		// Framerate.
 		ImGui::Text("Framerate");
+
+		// Maximum Vertex Attributes.
+		std::string maximumVertexAttributes = "Maximum Vertex Attributes: " + std::to_string(settings->maximumVertexAttributes);
+		ImGui::Text(maximumVertexAttributes.c_str());
 	}
 
 	ImGui::End();
@@ -55,12 +61,12 @@ void Pink::UserInterface::drawInfo()
 void Pink::UserInterface::drawOpenGLSettings()
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(ImVec2(150, 80));
+	ImGui::SetNextWindowSize(ImVec2(200, 80));
 	ImGui::SetNextWindowBgAlpha(0.6f);
 
 	if (ImGui::Begin("OpenGL Settings"))
 	{
-		ImGui::Checkbox("Wireframe Mode", &wireframeMode);
+		ImGui::Checkbox("Wireframe Mode", &(settings->wireframeMode));
 	}
 
 	ImGui::End();
@@ -71,11 +77,6 @@ void Pink::UserInterface::drawOpenGLSettings()
 * Public Methods
 *
 */
-bool Pink::UserInterface::getWireframeMode()
-{
-	return wireframeMode;
-}
-
 void Pink::UserInterface::draw()
 {
 	drawInfo();

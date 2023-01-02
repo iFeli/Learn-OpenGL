@@ -2,6 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Settings.h"
+
 namespace Pink
 {
 	class UserInterface;
@@ -10,18 +12,15 @@ namespace Pink
 class Pink::UserInterface
 {
 private:
+	Settings* const settings;
 	GLFWwindow* const window;
-
-	bool wireframeMode;
 
 	void drawInfo();
 	void drawOpenGLSettings();
 
 public:
-	UserInterface(GLFWwindow* const window);
+	UserInterface(Settings* const settings, GLFWwindow* const window);
 	~UserInterface();
-
-	bool getWireframeMode();
 
 	void draw();
 	void newFrame();

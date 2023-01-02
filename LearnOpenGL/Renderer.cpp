@@ -17,7 +17,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 * 
 */
 Pink::Renderer::Renderer(int width, int height) :
-	width(width), height(height), userInterface(nullptr), window(nullptr), wireframeMode(false)
+	width(width), height(height)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -45,13 +45,15 @@ Pink::Renderer::Renderer(int width, int height) :
 		throw;
 	}
 
-	userInterface = new UserInterface(window);
+	settings = new Settings(maximumVertexAttributes());
+	userInterface = new UserInterface(settings, window);
 }
 
 Pink::Renderer::~Renderer()
 {
 	glfwTerminate();
 
+	delete settings;
 	delete userInterface;
 }
 
@@ -169,7 +171,7 @@ void Pink::Renderer::processInput()
 
 void Pink::Renderer::processUI()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, userInterface->getWireframeMode() ? GL_LINE : GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, settings->wireframeMode ? GL_LINE : GL_FILL);
 }
 
 /*
@@ -177,6 +179,15 @@ void Pink::Renderer::processUI()
 * Public Methods
 * 
 */
+
+int Pink::Renderer::maximumVertexAttributes()
+{
+	int numberOfAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numberOfAttributes);
+
+	return numberOfAttributes;
+}
+
 void Pink::Renderer::render()
 {
 	float vertices[] = {
@@ -231,6 +242,8 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Input.
@@ -240,7 +253,6 @@ void Pink::Renderer::render()
 		processUI();
 
 		// Render commands.
-		glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Tell ImGui we're rendering a new frame and to style the UI.
