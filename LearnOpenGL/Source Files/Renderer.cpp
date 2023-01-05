@@ -113,22 +113,23 @@ void Pink::Renderer::render()
 		1, 2, 3
 	};
 
-	// Create an OpenGL texture load load it using STB Image.
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	// Create the textures and load them using STB Image.
+	int textureWidth;
+	int textureHeight;
+	int numberOfChannels;
+	unsigned char* textureData;
 
+	unsigned int texture1;
+
+	glGenTextures(1, &texture1);
+
+	glBindTexture(GL_TEXTURE_2D, texture1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	int textureWidth;
-	int textureHeight;
-	int numberOfChannels;
-
-	unsigned char* testData;
-	unsigned char* textureData = stbi_load("Resource Files/Textures/Container.jpg", &textureWidth, &textureHeight, &numberOfChannels, 0);
+	textureData = stbi_load("Resource Files/Textures/Container.jpg", &textureWidth, &textureHeight, &numberOfChannels, 0);
 
 	if (textureData)
 	{
@@ -137,7 +138,33 @@ void Pink::Renderer::render()
 	}
 	else
 	{
-		std::cout << "Failed to load texture." << std::endl;
+		std::cout << "Failed to load Container texture." << std::endl;
+	}
+
+	stbi_image_free(textureData);
+
+	unsigned int texture2;
+
+	glGenTextures(1, &texture2);
+
+	glBindTexture(GL_TEXTURE_2D, texture2);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	stbi_set_flip_vertically_on_load(true);
+	textureData = stbi_load("Resource Files/Textures/AwesomeFace.png", &textureWidth, &textureHeight, &numberOfChannels, 0);
+	stbi_set_flip_vertically_on_load(false);
+
+	if (textureData)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load AwesomeFace texture." << std::endl;
 	}
 
 	stbi_image_free(textureData);
@@ -203,11 +230,17 @@ void Pink::Renderer::render()
 
 		// Draw commands.
 		shader.use();
-		//shader.setFloat("xOffset", 0.5f);
+		shader.setInt("texture1Data", 0);
+		shader.setInt("texture2Data", 1);
+		shader.setFloat("textureMix", settings->textureMix);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
+
 		glBindVertexArray(vao);
+		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
@@ -221,7 +254,8 @@ void Pink::Renderer::render()
 		glfwPollEvents();
 	}
 
-	glDeleteTextures(1, &texture);
+	glDeleteTextures(1, &texture1);
+	glDeleteTextures(1, &texture2);
 
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);

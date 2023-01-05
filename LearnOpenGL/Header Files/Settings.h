@@ -16,6 +16,7 @@ public:
 	const int maximumVertexAttributes;
 	
 	ImColor clearColor = ImColor(0.75f, 0.1f, 0.5f, 1.0f);
+	float textureMix = 0.2f;
 	bool wireframeMode = false;
 };
 

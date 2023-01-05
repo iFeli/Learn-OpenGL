@@ -34,6 +34,9 @@
     <Filter Include="Library\STB Image">
       <UniqueIdentifier>{c97864d9-a156-478b-809d-227ecc72304c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{1f79aef0-8354-4462-a59b-bdb6d862ae8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -142,5 +145,10 @@
     <None Include="Resource Files\Shaders\Shader.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource Files\Textures\Container.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>
