@@ -3,6 +3,9 @@
 #include "Shader.h"
 #include "UserInterface.h"
 
+#include "GLM/glm.hpp"
+#include "GLM/gtc/matrix_transform.hpp"
+#include "GLM/gtc/type_ptr.hpp"
 #include "STB Image/stb_image.h"
 
 #include <iostream>
@@ -226,11 +229,11 @@ void Pink::Renderer::render()
 
 		double deltaTime = currentTime - lastTime;
 
+		settings->fps = int(numberOfFrames / deltaTime);
+		settings->frameTime = 1000.0f / numberOfFrames;
+
 		if (deltaTime >= 1.0)
 		{
-			settings->fps = numberOfFrames / deltaTime;
-			settings->frameTime = 1000.0f / numberOfFrames;
-
 			numberOfFrames = 0;
 			lastTime += 1.0;
 		}
@@ -250,10 +253,18 @@ void Pink::Renderer::render()
 
 		// Draw commands.
 		shader.use();
+
 		shader.setBool("colorize", settings->colorize);
 		shader.setInt("texture1Data", 0);
 		shader.setInt("texture2Data", 1);
 		shader.setFloat("textureMix", settings->textureMix);
+
+		glm::mat4 transform = glm::mat4(1.0f);
+		
+		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+
+		shader.setTransform("transform", glm::value_ptr(transform));
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);

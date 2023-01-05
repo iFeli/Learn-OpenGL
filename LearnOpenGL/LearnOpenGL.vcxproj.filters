@@ -37,6 +37,12 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{1f79aef0-8354-4462-a59b-bdb6d862ae8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\GLM">
+      <UniqueIdentifier>{faf15bfd-c0ed-4c83-9a93-872cec539976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\GLM\GTC">
+      <UniqueIdentifier>{0121fc22-dbf9-49ac-b5fc-b0550acf8a87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -136,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Library\STB Image\stb_image.h">
       <Filter>Library\STB Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\GLM\glm.hpp">
+      <Filter>Library\GLM</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\GLM\gtc\matrix_transform.hpp">
+      <Filter>Library\GLM\GTC</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\GLM\gtc\type_ptr.hpp">
+      <Filter>Library\GLM\GTC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

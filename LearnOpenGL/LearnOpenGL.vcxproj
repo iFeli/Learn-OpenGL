@@ -155,6 +155,9 @@
     <ClInclude Include="Library\GLAD\glad.h" />
     <ClInclude Include="Library\GLFW\glfw3.h" />
     <ClInclude Include="Library\GLFW\glfw3native.h" />
+    <ClInclude Include="Library\GLM\glm.hpp" />
+    <ClInclude Include="Library\GLM\gtc\matrix_transform.hpp" />
+    <ClInclude Include="Library\GLM\gtc\type_ptr.hpp" />
     <ClInclude Include="Library\ImGui\imconfig.h" />
     <ClInclude Include="Library\ImGui\imgui.h" />
     <ClInclude Include="Library\ImGui\imgui_impl_glfw.h" />
