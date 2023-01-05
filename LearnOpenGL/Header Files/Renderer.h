@@ -21,8 +21,8 @@ private:
 	UserInterface* userInterface = nullptr;
 	GLFWwindow* window = nullptr;
 
-	int width;
-	int height;
+	int windowWidth;
+	int windowHeight;
 
 	void processInput();
 	void processUI();

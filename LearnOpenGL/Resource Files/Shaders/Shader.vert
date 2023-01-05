@@ -2,12 +2,13 @@
 		
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 color;
+layout (location = 2) in vec2 textureCoordinate;
 
-uniform float xOffset;
+//uniform float xOffset;
 
 out vec3 vertexPosition;
 out vec3 vertexColor;
-
+out vec2 vertexTextureCoordinate;
 
 void main()
 {
@@ -15,8 +16,9 @@ void main()
 	//	gl_Position = vec4(-position, 1.0f);
 
 	// Offset the triangle by a given uniform value.
-	gl_Position = vec4(position.x + xOffset, position.y, position.z, 1.0);
-	
+	gl_Position = vec4(position, 1.0);
+
 	vertexPosition = position;
 	vertexColor = color;
+	vertexTextureCoordinate = textureCoordinate;
 };

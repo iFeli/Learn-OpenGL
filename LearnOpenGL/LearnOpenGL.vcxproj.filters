@@ -36,110 +36,111 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UserInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLAD\glad.c">
+    <ClCompile Include="Library\GLAD\glad.c">
       <Filter>Library\GLAD</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui.cpp">
+    <ClCompile Include="Library\ImGui\imgui.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_demo.cpp">
+    <ClCompile Include="Library\ImGui\imgui_demo.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_draw.cpp">
+    <ClCompile Include="Library\ImGui\imgui_draw.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_glfw.cpp">
+    <ClCompile Include="Library\ImGui\imgui_impl_glfw.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
+    <ClCompile Include="Library\ImGui\imgui_impl_opengl3.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_tables.cpp">
+    <ClCompile Include="Library\ImGui\imgui_tables.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_widgets.cpp">
+    <ClCompile Include="Library\ImGui\imgui_widgets.cpp">
       <Filter>Library\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stb_image.cpp">
+    <ClCompile Include="Library\STB Image\stb_image.cpp">
       <Filter>Library\STB Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\UserInterface.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="Header Files\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UserInterface.h">
+    <ClInclude Include="Header Files\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLAD\glad.h">
+    <ClInclude Include="Header Files\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\UserInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\GLAD\glad.h">
       <Filter>Library\GLAD</Filter>
     </ClInclude>
-    <ClInclude Include="GLFW\glfw3native.h">
+    <ClInclude Include="Library\GLFW\glfw3.h">
       <Filter>Library\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="GLFW\glfw3.h">
+    <ClInclude Include="Library\GLFW\glfw3native.h">
       <Filter>Library\GLFW</Filter>
     </ClInclude>
-    <ClInclude Include="KHR\khrplatform.h">
+    <ClInclude Include="Library\ImGui\imconfig.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imgui.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imgui_impl_glfw.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imgui_impl_opengl3.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imgui_impl_opengl3_loader.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imgui_internal.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imstb_rectpack.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imstb_textedit.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\ImGui\imstb_truetype.h">
+      <Filter>Library\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\KHR\khrplatform.h">
       <Filter>Library\KHR</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imstb_truetype.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imconfig.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_glfw.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_opengl3.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_internal.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imstb_rectpack.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imstb_textedit.h">
-      <Filter>Library\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shader.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Shader.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="STB Image\stb_image.h">
+    <ClInclude Include="Library\STB Image\stb_image.h">
       <Filter>Library\STB Image</Filter>
-    </Text>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resource Files\Shaders\Shader.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Shader.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

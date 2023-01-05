@@ -3,6 +3,8 @@
 #include "Shader.h"
 #include "UserInterface.h"
 
+#include "STB Image/stb_image.h"
+
 #include <iostream>
 
 /*
@@ -18,7 +20,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 * 
 */
 Pink::Renderer::Renderer(int width, int height) :
-	width(width), height(height)
+	windowWidth(width), windowHeight(height)
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -96,24 +98,60 @@ int Pink::Renderer::maximumVertexAttributes()
 
 void Pink::Renderer::render()
 {
+	// Vertices and geometry info.
 	float vertices[] = {
-		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+		// Positions			// Colors			// Texture coordinates
+		 0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,	// Top-right corner
+		 0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f,	// Bottom-right corner
+		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Bottom-left corner
+		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 1.0f	// Top-left corner
 	};
 
+	// Indices for the EBO.
 	unsigned int indices[] = {
-		0, 1, 2
+		0, 1, 3,
+		1, 2, 3
 	};
 
-	Shader shader = Shader("Shader.vert", "Shader.frag");
+	// Create an OpenGL texture load load it using STB Image.
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	int textureWidth;
+	int textureHeight;
+	int numberOfChannels;
+
+	unsigned char* testData;
+	unsigned char* textureData = stbi_load("Resource Files/Textures/Container.jpg", &textureWidth, &textureHeight, &numberOfChannels, 0);
+
+	if (textureData)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture." << std::endl;
+	}
+
+	stbi_image_free(textureData);
+
+	// Create the shader.
+	Shader shader = Shader("Resource Files/Shaders/Shader.vert", "Resource Files/Shaders/Shader.frag");
+
+	// Create the VAO, VBO, and EBO.
 	unsigned int vao;
 	unsigned int vbo;
 	unsigned int ebo;
 
-	glGenBuffers(1, &vbo);
 	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
@@ -124,11 +162,17 @@ void Pink::Renderer::render()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void *)0);
+	// Position attribute.
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void *)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+	// Color attribute.
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
 	glEnableVertexAttribArray(1);
+
+	// Texture coordinate attribute.
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
+	glEnableVertexAttribArray(2);
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -159,8 +203,10 @@ void Pink::Renderer::render()
 
 		// Draw commands.
 		shader.use();
-		shader.setFloat("xOffset", 0.5f);
+		//shader.setFloat("xOffset", 0.5f);
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -174,6 +220,12 @@ void Pink::Renderer::render()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	glDeleteTextures(1, &texture);
+
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ebo);
 }
 
 /*

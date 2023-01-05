@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Header Files;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Library;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -132,45 +132,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GLAD\glad.c" />
-    <ClCompile Include="ImGui\imgui.cpp" />
-    <ClCompile Include="ImGui\imgui_demo.cpp" />
-    <ClCompile Include="ImGui\imgui_draw.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="ImGui\imgui_tables.cpp" />
-    <ClCompile Include="ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="Library\GLAD\glad.c" />
+    <ClCompile Include="Library\ImGui\imgui.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Library\STB Image\stb_image.cpp" />
+    <ClCompile Include="Source Files\main.cpp" />
+    <ClCompile Include="Source Files\Renderer.cpp" />
+    <ClCompile Include="Source Files\Settings.cpp" />
+    <ClCompile Include="Source Files\Shader.cpp" />
+    <ClCompile Include="Source Files\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLAD\glad.h" />
-    <ClInclude Include="GLFW\glfw3.h" />
-    <ClInclude Include="GLFW\glfw3native.h" />
-    <ClInclude Include="ImGui\imconfig.h" />
-    <ClInclude Include="ImGui\imgui.h" />
-    <ClInclude Include="ImGui\imgui_impl_glfw.h" />
-    <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ImGui\imstb_textedit.h" />
-    <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="KHR\khrplatform.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="Header Files\Renderer.h" />
+    <ClInclude Include="Header Files\Settings.h" />
+    <ClInclude Include="Header Files\Shader.h" />
+    <ClInclude Include="Header Files\UserInterface.h" />
+    <ClInclude Include="Library\GLAD\glad.h" />
+    <ClInclude Include="Library\GLFW\glfw3.h" />
+    <ClInclude Include="Library\GLFW\glfw3native.h" />
+    <ClInclude Include="Library\ImGui\imconfig.h" />
+    <ClInclude Include="Library\ImGui\imgui.h" />
+    <ClInclude Include="Library\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="Library\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Library\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Library\ImGui\imgui_internal.h" />
+    <ClInclude Include="Library\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Library\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Library\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Library\KHR\khrplatform.h" />
+    <ClInclude Include="Library\STB Image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader.frag" />
-    <None Include="Shader.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="STB Image\stb_image.h" />
+    <None Include="Resource Files\Shaders\Shader.frag" />
+    <None Include="Resource Files\Shaders\Shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
