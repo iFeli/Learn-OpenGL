@@ -3,6 +3,8 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <iomanip>
+#include <sstream>
 #include <string>
 
 /*
@@ -40,19 +42,28 @@ void Pink::UserInterface::drawInfo()
 	glfwGetWindowSize(window, &glfwWidth, &glfwHeight);
 
 	float imGuiWidth = 300;
-	float imGuiHeight = 80;
+	float imGuiHeight = 150;
 
 	ImGui::SetNextWindowPos(ImVec2(glfwWidth - imGuiWidth, 0));
-	ImGui::SetNextWindowSize(ImVec2(imGuiWidth, 80));
+	ImGui::SetNextWindowSize(ImVec2(imGuiWidth, imGuiHeight));
 	ImGui::SetNextWindowBgAlpha(0.6f);
 
 	if (ImGui::Begin("Info"))
 	{
 		// Framerate.
-		ImGui::Text("Framerate");
+		std::string fps = "FPS: " + std::to_string(settings->fps);
+		ImGui::Text(fps.c_str());
+
+		// Frame Time.
+		std::ostringstream outputStringStream;
+		outputStringStream << std::setprecision(3) << settings->frameTime;
+		std::string frameTime = "Frame Time: " + outputStringStream.str();
+
+		ImGui::Text(frameTime.c_str());
 
 		// Maximum Vertex Attributes.
 		std::string maximumVertexAttributes = "Maximum Vertex Attributes: " + std::to_string(settings->maximumVertexAttributes);
+
 		ImGui::Text(maximumVertexAttributes.c_str());
 	}
 
@@ -70,9 +81,11 @@ void Pink::UserInterface::drawOpenGLSettings()
 
 	if (ImGui::Begin("OpenGL Settings"))
 	{
+		ImGui::ColorEdit4("Clear Color", (float*)&(settings->clearColor));
+
 		ImGui::Checkbox("Wireframe Mode", &(settings->wireframeMode));
 
-		ImGui::ColorEdit4("Clear Color", (float *)&(settings->clearColor));
+		ImGui::Checkbox("Colorize", &(settings->colorize));
 
 		ImGui::SliderFloat("Texture Mix", &(settings->textureMix), 0.0f, 1.0f, "%.2f", 0);
 	}

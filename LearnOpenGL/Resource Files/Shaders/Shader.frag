@@ -6,11 +6,19 @@ in vec2 vertexTextureCoordinate;
 
 out vec4 fragment_Color;
 
+uniform bool colorize;
 uniform sampler2D texture1Data;
 uniform sampler2D texture2Data;
 uniform float textureMix;
 
 void main()
 {
-	fragment_Color = mix(texture(texture1Data, vertexTextureCoordinate), texture(texture2Data, vertexTextureCoordinate), textureMix);
+	vec4 color = mix(texture(texture1Data, vertexTextureCoordinate), texture(texture2Data, vertexTextureCoordinate), textureMix);
+
+	if (colorize)
+	{
+		color = color * vec4(vertexColor, 1.0);
+	}
+	
+	fragment_Color = color;
 }

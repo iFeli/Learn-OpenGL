@@ -213,8 +213,28 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	// FPS and frame time calculations.
+	double lastTime = glfwGetTime();
+	int numberOfFrames = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
+		// Calculate FPS and frame time.
+		double currentTime = glfwGetTime();
+		
+		numberOfFrames++;
+
+		double deltaTime = currentTime - lastTime;
+
+		if (deltaTime >= 1.0)
+		{
+			settings->fps = numberOfFrames / deltaTime;
+			settings->frameTime = 1000.0f / numberOfFrames;
+
+			numberOfFrames = 0;
+			lastTime += 1.0;
+		}
+
 		// Input.
 		processInput();
 
@@ -230,6 +250,7 @@ void Pink::Renderer::render()
 
 		// Draw commands.
 		shader.use();
+		shader.setBool("colorize", settings->colorize);
 		shader.setInt("texture1Data", 0);
 		shader.setInt("texture2Data", 1);
 		shader.setFloat("textureMix", settings->textureMix);
