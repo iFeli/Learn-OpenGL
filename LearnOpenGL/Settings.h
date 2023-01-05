@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include <ImGui/imgui_impl_opengl3.h>
 
@@ -14,6 +15,8 @@ public:
 
 	const int maximumVertexAttributes;
 	
-	ImColor fillColor = ImColor(0.0f, 0.45f, 0.85f, 1.0f);
+	ImColor clearColor = ImColor(0.75f, 0.1f, 0.5f, 1.0f);
 	bool wireframeMode = false;
 };
+
+#endif

@@ -1,5 +1,6 @@
 #include "Renderer.h"
 
+#include "Shader.h"
 #include "UserInterface.h"
 
 #include <iostream>
@@ -62,107 +63,6 @@ Pink::Renderer::~Renderer()
 * Private Methods
 * 
 */
-unsigned int Pink::Renderer::createVertexShader()
-{
-	const char* vertexShaderSource = 
-		"#version 330 core"
-		"\n"
-		"layout (location = 0) in vec3 position;"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"    gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n"
-		"}\0";
-
-	const unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-
-		return NULL;
-	}
-
-	return vertexShader;
-}
-
-unsigned int Pink::Renderer::createFragmentShader()
-{
-	const char* fragmentShaderSource =
-		"#version 330 core"
-		"\n"
-		"out vec4 fragmentColor;"
-		"\n"
-		"uniform vec4 customColor;"
-		"\n"
-		"void main()\n"
-		"{\n"
-		"    fragmentColor = customColor;"
-		"}\0";
-
-	const unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	int success;
-	char infoLog[512];
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-
-		return NULL;
-	}
-
-	return fragmentShader;
-}
-
-unsigned int Pink::Renderer::createShaderProgram()
-{
-	const unsigned int vertexShader = createVertexShader();
-	const unsigned int fragmentShader = createFragmentShader();
-
-	if (vertexShader == NULL || fragmentShader == NULL)
-	{
-		return NULL;
-	}
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	int success;
-	char infoLog[512];
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-
-		return NULL;
-	}
-
-	return shaderProgram;
-}
-
 void Pink::Renderer::processInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -171,13 +71,14 @@ void Pink::Renderer::processInput()
 	}
 }
 
-void Pink::Renderer::processUI(const unsigned int shaderProgram)
+void Pink::Renderer::processUI()
 {
+	// Toggle wireframe mode.
 	glPolygonMode(GL_FRONT_AND_BACK, settings->wireframeMode ? GL_LINE : GL_FILL);
 
-	int vertexColorLocation = glGetUniformLocation(shaderProgram, "customColor");
-	ImColor fillColor = settings->fillColor;
-	glUniform4f(vertexColorLocation, fillColor.Value.x, fillColor.Value.y, fillColor.Value.z, fillColor.Value.w);
+	// Custom clear color.
+	ImColor clearColor = settings->clearColor;
+	glClearColor(clearColor.Value.x, clearColor.Value.y, clearColor.Value.z, 1.0f);
 }
 
 /*
@@ -185,7 +86,6 @@ void Pink::Renderer::processUI(const unsigned int shaderProgram)
 * Public Methods
 * 
 */
-
 int Pink::Renderer::maximumVertexAttributes()
 {
 	int numberOfAttributes;
@@ -197,25 +97,16 @@ int Pink::Renderer::maximumVertexAttributes()
 void Pink::Renderer::render()
 {
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 	};
 
 	unsigned int indices[] = {
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 2
 	};
 
-	const unsigned int shaderProgram = createShaderProgram();
-
-	if (shaderProgram == NULL)
-	{
-		std::cout << "ERROR::SHADER::PROGRAM::CREATION_FAILED" << std::endl;
-
-		return;
-	}
+	Shader shader = Shader("Shader.vert", "Shader.frag");
 
 	unsigned int vao;
 	unsigned int vbo;
@@ -233,8 +124,11 @@ void Pink::Renderer::render()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void *)0);
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+	glEnableVertexAttribArray(1);
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -248,15 +142,13 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Input.
 		processInput();
 
 		// UI updates.
-		processUI(shaderProgram);
+		processUI();
 
 		// Render commands.
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -266,7 +158,8 @@ void Pink::Renderer::render()
 		userInterface->style();
 
 		// Draw commands.
-		glUseProgram(shaderProgram);
+		shader.use();
+		shader.setFloat("xOffset", 0.5f);
 
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

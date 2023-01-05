@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef RENDERER_H
+#define RENDERER_H
 /*
 * GLAD is included before GLFW as it includes the required OpenGL headers that GLFW(and others) use.
 */
@@ -23,14 +23,9 @@ private:
 
 	int width;
 	int height;
-	bool wireframeMode = false;
-	
-	unsigned int createVertexShader();
-	unsigned int createFragmentShader();
-	unsigned int createShaderProgram();
 
 	void processInput();
-	void processUI(const unsigned int shaderProgram);
+	void processUI();
 
 public:
 	Renderer(int width, int height);
@@ -39,3 +34,5 @@ public:
 	int maximumVertexAttributes();
 	void render();
 };
+
+#endif

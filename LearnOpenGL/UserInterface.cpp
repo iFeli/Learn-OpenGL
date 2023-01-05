@@ -72,7 +72,7 @@ void Pink::UserInterface::drawOpenGLSettings()
 	{
 		ImGui::Checkbox("Wireframe Mode", &(settings->wireframeMode));
 
-		ImGui::ColorEdit4("Fill Color", (float *)&(settings->fillColor));
+		ImGui::ColorEdit4("Clear Color", (float *)&(settings->clearColor));
 	}
 
 	ImGui::End();

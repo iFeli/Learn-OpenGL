@@ -1,4 +1,5 @@
-#pragma once
+#ifndef USERINTERFACE_H
+#define USERINTERFACE_H
 
 #include <GLFW/glfw3.h>
 
@@ -27,3 +28,5 @@ public:
 	void render();
 	void style();
 };
+
+#endif
