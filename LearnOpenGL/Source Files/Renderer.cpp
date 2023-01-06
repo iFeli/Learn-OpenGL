@@ -11,16 +11,16 @@
 #include <iostream>
 
 /*
-* 
+*
 * Forward Declarations
-* 
+*
 */
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 /*
-* 
+*
 * Constructor & Destructor
-* 
+*
 */
 Pink::Renderer::Renderer(int width, int height) :
 	windowWidth(width), windowHeight(height)
@@ -64,9 +64,9 @@ Pink::Renderer::~Renderer()
 }
 
 /*
-* 
+*
 * Private Methods
-* 
+*
 */
 void Pink::Renderer::processInput()
 {
@@ -87,9 +87,9 @@ void Pink::Renderer::processUI()
 }
 
 /*
-* 
+*
 * Public Methods
-* 
+*
 */
 int Pink::Renderer::maximumVertexAttributes()
 {
@@ -103,18 +103,67 @@ void Pink::Renderer::render()
 {
 	// Vertices and geometry info.
 	float vertices[] = {
-		// Positions			// Colors			// Texture coordinates
-		 0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,	// Top-right corner
-		 0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f,	// Bottom-right corner
-		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Bottom-left corner
-		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 1.0f	// Top-left corner
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
 	// Indices for the EBO.
 	unsigned int indices[] = {
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+		9, 10, 11,
+		12, 13, 14,
+		15, 16, 17,
+		18, 19, 20,
+		21, 22, 23,
+		24, 25, 26,
+		27, 28, 29,
+		30, 31, 32, 
+		33, 34, 35,
 	};
+
+	// Enable OpenGL depth testing.
+	glEnable(GL_DEPTH_TEST);
 
 	// Create the textures and load them using STB Image.
 	int textureWidth;
@@ -193,16 +242,12 @@ void Pink::Renderer::render()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// Color attribute.
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
-	glEnableVertexAttribArray(1);
-
 	// Texture coordinate attribute.
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(sizeof(float) * 3));
+	glEnableVertexAttribArray(1);
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -216,6 +261,16 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	// Model, View, Projection matrices.
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+
+	// Scene translation occurs in the reverse direction of where we want to move.
+	glm::mat4 view = glm::mat4(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
+
 	// FPS and frame time calculations.
 	double lastTime = glfwGetTime();
 	int numberOfFrames = 0;
@@ -224,7 +279,7 @@ void Pink::Renderer::render()
 	{
 		// Calculate FPS and frame time.
 		double currentTime = glfwGetTime();
-		
+
 		numberOfFrames++;
 
 		double deltaTime = currentTime - lastTime;
@@ -245,7 +300,7 @@ void Pink::Renderer::render()
 		processUI();
 
 		// Render commands.
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Tell ImGui we're rendering a new frame and to style the UI.
 		userInterface->newFrame();
@@ -254,17 +309,13 @@ void Pink::Renderer::render()
 		// Draw commands.
 		shader.use();
 
-		shader.setBool("colorize", settings->colorize);
+		shader.setMatrix4Float("model", glm::value_ptr(model));
+		shader.setMatrix4Float("view", glm::value_ptr(view));
+		shader.setMatrix4Float("projection", glm::value_ptr(projection));
+
 		shader.setInt("texture1Data", 0);
 		shader.setInt("texture2Data", 1);
 		shader.setFloat("textureMix", settings->textureMix);
-
-		glm::mat4 transform = glm::mat4(1.0f);
-		
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-
-		shader.setTransform("transform", glm::value_ptr(transform));
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -272,8 +323,8 @@ void Pink::Renderer::render()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		glBindVertexArray(vao);
-		
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
@@ -295,9 +346,9 @@ void Pink::Renderer::render()
 }
 
 /*
-* 
+*
 * Callback Functions
-* 
+*
 */
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

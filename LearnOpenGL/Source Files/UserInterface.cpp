@@ -42,7 +42,7 @@ void Pink::UserInterface::drawInfo()
 	glfwGetWindowSize(window, &glfwWidth, &glfwHeight);
 
 	float imGuiWidth = 300;
-	float imGuiHeight = 150;
+	float imGuiHeight = 120;
 
 	ImGui::SetNextWindowPos(ImVec2(glfwWidth - imGuiWidth, 0));
 	ImGui::SetNextWindowSize(ImVec2(imGuiWidth, imGuiHeight));
@@ -73,7 +73,7 @@ void Pink::UserInterface::drawInfo()
 void Pink::UserInterface::drawOpenGLSettings()
 {
 	float imGuiWidth = 300;
-	float imGuiHeight = 150;
+	float imGuiHeight = 120;
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImVec2(imGuiWidth, imGuiHeight));
@@ -84,8 +84,6 @@ void Pink::UserInterface::drawOpenGLSettings()
 		ImGui::ColorEdit4("Clear Color", (float*)&(settings->clearColor));
 
 		ImGui::Checkbox("Wireframe Mode", &(settings->wireframeMode));
-
-		ImGui::Checkbox("Colorize", &(settings->colorize));
 
 		ImGui::SliderFloat("Texture Mix", &(settings->textureMix), 0.0f, 1.0f, "%.2f", 0);
 	}
