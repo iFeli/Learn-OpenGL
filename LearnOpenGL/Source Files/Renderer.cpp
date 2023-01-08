@@ -144,53 +144,57 @@ int Pink::Renderer::maximumVertexAttributes()
 
 void Pink::Renderer::render()
 {
-	// Vertices and geometry info.
+	// Vertex and normal info.
 	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
+		// Position.			// Normal.
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, -1.0f,
 
-		-0.5f, -0.5f,  0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,  1.0f,
 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,   -1.0f, 0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,   -1.0f, 0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,   -1.0f, 0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,   -1.0f, 0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,   -1.0f, 0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,   -1.0f, 0.0f,  0.0f,
 
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,	1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,	1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	1.0f,  0.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,	0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,	0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, -1.0f,  0.0f,
 
-		-0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		 0.5f,  0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,	0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,	0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,	0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,	0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,	0.0f,  1.0f,  0.0f
 	};
 
+	// Light position.
+	glm::vec3 lightPosition = glm::vec3(1.2f, 1.0f, 2.0f);
+
 	// Clear color for the frame buffer.
-	glClearColor(0.75f, 0.1f, 0.5f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	// Enable OpenGL depth testing.
 	glEnable(GL_DEPTH_TEST);
@@ -201,6 +205,7 @@ void Pink::Renderer::render()
 	unsigned int vbo;
 
 	unsigned int positionAttributeIndex = 0;
+	unsigned int normalAttributeIndex = 1;
 
 	glGenVertexArrays(1, &containerVAO);
 	glGenVertexArrays(1, &lightVAO);
@@ -219,7 +224,11 @@ void Pink::Renderer::render()
 
 	// Position attribute.
 	glEnableVertexAttribArray(positionAttributeIndex);
-	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
+
+	// Normal attribute.
+	glEnableVertexAttribArray(normalAttributeIndex);
+	glVertexAttribPointer(normalAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -239,8 +248,9 @@ void Pink::Renderer::render()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	// No need to bind the data to the VBO as that was already done for the container VAO and the data remains the same.
 
+	// Position attribute.
 	glEnableVertexAttribArray(positionAttributeIndex);
-	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -302,6 +312,8 @@ void Pink::Renderer::render()
 
 		containerShader.setVector3("color", 1.0f, 0.5f, 0.31f);
 		containerShader.setVector3("lightColor", 1.0f, 1.0f, 1.0f);
+		containerShader.setVector3("lightPosition", lightPosition);
+		containerShader.setVector3("viewPosition", camera.position);
 
 		glBindVertexArray(containerVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -309,8 +321,11 @@ void Pink::Renderer::render()
 		//
 		// Draw light cube.
 		//
+		lightPosition.x = 1.0f + sin(currentFrameTime) * 2.0f;
+		lightPosition.y = sin(currentFrameTime * 0.5);
+
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(1.2f, 1.0f, -2.0f));
+		model = glm::translate(model, lightPosition);
 		model = glm::scale(model, glm::vec3(0.2f));
 
 		lightShader.use();

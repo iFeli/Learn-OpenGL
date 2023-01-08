@@ -1,6 +1,8 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <GLM/glm.hpp>
+
 #include <string>
 
 namespace Pink
@@ -23,6 +25,7 @@ public:
 	void setInt(const std::string& name, int value) const;
 	void setMatrix4(const std::string& name, const float* value) const;
 	void setVector3(const std::string& name, float x, float y, float z) const;
+	void setVector3(const std::string& name, const glm::vec3 &value) const;
 };
 
 #endif

@@ -138,3 +138,8 @@ void Pink::Shader::setVector3(const std::string& name, float x, float y, float z
 {
 	glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z);
 }
+
+void Pink::Shader::setVector3(const std::string& name, const glm::vec3& value) const
+{
+	glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
+}
