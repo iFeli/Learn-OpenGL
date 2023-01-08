@@ -160,10 +160,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource Files\Shaders\Shader.frag">
+    <None Include="Resource Files\Shaders\Container.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resource Files\Shaders\Shader.vert">
+    <None Include="Resource Files\Shaders\Container.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Light.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Light.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

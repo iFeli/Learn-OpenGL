@@ -173,8 +173,10 @@
     <ClInclude Include="Library\STB Image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource Files\Shaders\Shader.frag" />
-    <None Include="Resource Files\Shaders\Shader.vert" />
+    <None Include="Resource Files\Shaders\Container.frag" />
+    <None Include="Resource Files\Shaders\Container.vert" />
+    <None Include="Resource Files\Shaders\Light.frag" />
+    <None Include="Resource Files\Shaders\Light.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource Files\Textures\Container.jpg" />

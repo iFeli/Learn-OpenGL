@@ -129,7 +129,12 @@ void Pink::Shader::setInt(const std::string& name, int value) const
 	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
-void Pink::Shader::setMatrix4Float(const std::string& name, float* value) const
+void Pink::Shader::setMatrix4(const std::string& name, const float* value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, value);
+}
+
+void Pink::Shader::setVector3(const std::string& name, float x, float y, float z) const
+{
+	glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z);
 }
