@@ -141,6 +141,7 @@
     <ClCompile Include="Library\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
+    <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
     <ClCompile Include="Source Files\Renderer.cpp" />
     <ClCompile Include="Source Files\Settings.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Source Files\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header Files\Camera.h" />
     <ClInclude Include="Header Files\Renderer.h" />
     <ClInclude Include="Header Files\Settings.h" />
     <ClInclude Include="Header Files\Shader.h" />

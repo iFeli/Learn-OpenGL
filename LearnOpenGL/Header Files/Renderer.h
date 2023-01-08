@@ -24,6 +24,9 @@ private:
 	int windowWidth;
 	int windowHeight;
 
+	float deltaTime = 0.0f;
+	float lastFrameTime = 0.0f;
+
 	void processInput();
 	void processUI();
 

@@ -1,5 +1,6 @@
 #include "Renderer.h"
 
+#include "Camera.h"
 #include "Shader.h"
 #include "UserInterface.h"
 
@@ -16,6 +17,21 @@
 *
 */
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xPosition, double yPosition);
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
+
+/*
+* 
+*  Variables
+* 
+*/
+Pink::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastMouseXPosition = 0.0f;
+float lastMouseYPosition = 0.0f;
+bool firstMousePosition = true;
+
+float deltaTime = 0.0f;
+float lastFrameTime = 0.0f;
 
 /*
 *
@@ -25,6 +41,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 Pink::Renderer::Renderer(int width, int height) :
 	windowWidth(width), windowHeight(height)
 {
+	lastMouseXPosition = static_cast<float>(width) * 0.5f;
+	lastMouseYPosition = static_cast<float>(height) * 0.5f;
+
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -43,6 +62,9 @@ Pink::Renderer::Renderer(int width, int height) :
 
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -73,6 +95,28 @@ void Pink::Renderer::processInput()
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
+	}
+
+	const float cameraSpeed = 2.5f * deltaTime;
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		camera.processKeyboard(FORWARD, deltaTime);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		camera.processKeyboard(BACKWARD, deltaTime);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		camera.processKeyboard(LEFT, deltaTime);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		camera.processKeyboard(RIGHT, deltaTime);
 	}
 }
 
@@ -146,20 +190,18 @@ void Pink::Renderer::render()
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
-	// Indices for the EBO.
-	unsigned int indices[] = {
-		0, 1, 2,
-		3, 4, 5,
-		6, 7, 8,
-		9, 10, 11,
-		12, 13, 14,
-		15, 16, 17,
-		18, 19, 20,
-		21, 22, 23,
-		24, 25, 26,
-		27, 28, 29,
-		30, 31, 32, 
-		33, 34, 35,
+	// World space position for the cubes.
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,   0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f,  -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f,  -3.5f),
+		glm::vec3(-1.7f,  3.0f,  -7.5f),
+		glm::vec3(1.3f, -2.0f,  -2.5f),
+		glm::vec3(1.5f,  2.0f,  -2.5f),
+		glm::vec3(1.5f,  0.2f,  -1.5f),
+		glm::vec3(-1.3f,  1.0f,  -1.5f),
 	};
 
 	// Enable OpenGL depth testing.
@@ -223,23 +265,22 @@ void Pink::Renderer::render()
 
 	// Create the shader.
 	Shader shader = Shader("Resource Files/Shaders/Shader.vert", "Resource Files/Shaders/Shader.frag");
+	shader.use();
 
-	// Create the VAO, VBO, and EBO.
+	shader.setInt("texture1Data", 0);
+	shader.setInt("texture2Data", 1);
+
+	// Create the VAO and VBO.
 	unsigned int vao;
 	unsigned int vbo;
-	unsigned int ebo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute.
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
@@ -261,28 +302,20 @@ void Pink::Renderer::render()
 	// an EBO configured for use.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	// Model, View, Projection matrices.
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
-	// Scene translation occurs in the reverse direction of where we want to move.
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)windowWidth / (float)windowHeight, 0.1f, 100.0f);
-
 	// FPS and frame time calculations.
 	double lastTime = glfwGetTime();
 	int numberOfFrames = 0;
 
 	while (!glfwWindowShouldClose(window))
 	{
+		float currentFrameTime = static_cast<float>(glfwGetTime());
+		deltaTime = currentFrameTime - lastFrameTime;
+		lastFrameTime = currentFrameTime;
+
 		// Calculate FPS and frame time.
 		double currentTime = glfwGetTime();
 
 		numberOfFrames++;
-
-		double deltaTime = currentTime - lastTime;
 
 		settings->fps = int(numberOfFrames / deltaTime);
 		settings->frameTime = 1000.0f / numberOfFrames;
@@ -306,15 +339,23 @@ void Pink::Renderer::render()
 		userInterface->newFrame();
 		userInterface->style();
 
-		// Draw commands.
-		shader.use();
+		// View matrix.
+		const float radius = 10.0f;
+		float camX = static_cast<float>(sin(currentTime) * radius);
+		float camZ = static_cast<float>(cos(currentTime) * radius);
 
-		shader.setMatrix4Float("model", glm::value_ptr(model));
+		// View matrix.
+		glm::mat4 view = camera.getViewMatrix();
+		
 		shader.setMatrix4Float("view", glm::value_ptr(view));
+
+		// Projection matrix.
+		float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), aspectRatio, 0.1f, 100.0f);
+
 		shader.setMatrix4Float("projection", glm::value_ptr(projection));
 
-		shader.setInt("texture1Data", 0);
-		shader.setInt("texture2Data", 1);
+		// Draw commands.
 		shader.setFloat("textureMix", settings->textureMix);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -324,7 +365,19 @@ void Pink::Renderer::render()
 
 		glBindVertexArray(vao);
 
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			// Model matrix.
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
+
+			float angle = 10.0f * i;
+			model = glm::rotate(model, glm::radians(angle) * static_cast<float>(glfwGetTime()), glm::vec3(1.0f, 0.3f, 0.5f));
+
+			shader.setMatrix4Float("model", glm::value_ptr(model));
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
@@ -342,7 +395,6 @@ void Pink::Renderer::render()
 
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
 }
 
 /*
@@ -353,4 +405,31 @@ void Pink::Renderer::render()
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xPosition, double yPosition)
+{
+	float xPositionFloat = static_cast<float>(xPosition);
+	float yPositionFloat = static_cast<float>(yPosition);
+
+	if (firstMousePosition)
+	{
+		lastMouseXPosition = xPositionFloat;
+		lastMouseYPosition = yPositionFloat;
+
+		firstMousePosition = false;
+	}
+
+	float xOffset = xPositionFloat - lastMouseXPosition;
+	float yOffset = lastMouseYPosition - yPositionFloat;
+
+	lastMouseXPosition = xPositionFloat;
+	lastMouseYPosition = yPositionFloat;
+
+	camera.processMouseMovement(xOffset, yOffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	camera.processMouseScroll(static_cast<float>(yOffset));
 }

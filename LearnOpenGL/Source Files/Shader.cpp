@@ -116,7 +116,7 @@ void Pink::Shader::use()
 
 void Pink::Shader::setBool(const std::string& name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
+	glUniform1i(glGetUniformLocation(id, name.c_str()), static_cast<int>(value));
 }
 
 void Pink::Shader::setFloat(const std::string& name, float value) const
