@@ -177,5 +177,14 @@
     <Image Include="Resource Files\Textures\Container.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+    <Image Include="Resource Files\Textures\AwesomeFace.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Resource Files\Textures\WoodenBox_Diffuse.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Resource Files\Textures\WoodenBox_Specular.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

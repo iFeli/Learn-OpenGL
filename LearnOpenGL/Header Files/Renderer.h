@@ -27,6 +27,7 @@ private:
 	float deltaTime = 0.0f;
 	float lastFrameTime = 0.0f;
 
+	unsigned int loadTexture(char const* path);
 	void processInput();
 	void processUI();
 

@@ -179,7 +179,10 @@
     <None Include="Resource Files\Shaders\Light.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resource Files\Textures\AwesomeFace.png" />
     <Image Include="Resource Files\Textures\Container.jpg" />
+    <Image Include="Resource Files\Textures\WoodenBox_Diffuse.png" />
+    <Image Include="Resource Files\Textures\WoodenBox_Specular.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
