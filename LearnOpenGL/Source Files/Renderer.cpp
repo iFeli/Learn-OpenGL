@@ -102,7 +102,7 @@ unsigned int Pink::Renderer::loadTexture(char const* path)
 	int width;
 	int height;
 	int numberOfComponents;
-	
+
 	unsigned char* data = stbi_load(path, &width, &height, &numberOfComponents, 0);
 
 	if (data)
@@ -127,7 +127,7 @@ unsigned int Pink::Renderer::loadTexture(char const* path)
 		glTexParameteri(textureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
-	else 
+	else
 	{
 		std::cout << "Failed to load texture at path: " << path << std::endl;
 	}
@@ -187,7 +187,7 @@ int Pink::Renderer::maximumVertexAttributes()
 
 void Pink::Renderer::render()
 {
-	// Vertex and normal info.
+	// Vertex, normal, and texture coordinate info.
 	float vertices[] = {
 		// Position           // Normal            // Texture coordinate
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
@@ -233,6 +233,19 @@ void Pink::Renderer::render()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	// Light position.
 	glm::vec3 lightPosition = glm::vec3(1.2f, 1.0f, 2.0f);
 
@@ -244,7 +257,6 @@ void Pink::Renderer::render()
 
 	// Create the container VAO, the light VAO, and the VBO.
 	unsigned int containerVAO;
-	unsigned int lightVAO;
 	unsigned int vbo;
 
 	unsigned int positionAttributeIndex = 0;
@@ -252,14 +264,13 @@ void Pink::Renderer::render()
 	unsigned int textureCoordinateAttributeIndex = 2;
 
 	glGenVertexArrays(1, &containerVAO);
-	glGenVertexArrays(1, &lightVAO);
 	glGenBuffers(1, &vbo);
 
 	//
 	// Container
 	// 
-	Shader lightShader = Shader("Resource Files/Shaders/Light.vert", "Resource Files/Shaders/Light.frag");
-	
+	Shader containerShader = Shader("Resource Files/Shaders/Container.vert", "Resource Files/Shaders/Container.frag");
+
 	unsigned int diffuseMap = loadTexture("Resource Files/Textures/WoodenBox_Diffuse.png");
 	unsigned int specularMap = loadTexture("Resource Files/Textures/WoodenBox_Specular.png");
 
@@ -280,28 +291,6 @@ void Pink::Renderer::render()
 	// Texture coordinate attribute.
 	glEnableVertexAttribArray(textureCoordinateAttributeIndex);
 	glVertexAttribPointer(textureCoordinateAttributeIndex, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
-
-	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
-	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// The vertex array object (VAO) is unbound in order to avoid accidentally modifying it with subsequent calls.
-	glBindVertexArray(0);
-
-	//
-	// Light
-	//
-	Shader containerShader = Shader("Resource Files/Shaders/Container.vert", "Resource Files/Shaders/Container.frag");
-
-	// Set up the light VAO.
-	glBindVertexArray(lightVAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	// No need to bind the data to the VBO as that was already done for the container VAO and the data remains the same.
-
-	// Position attribute.
-	glEnableVertexAttribArray(positionAttributeIndex);
-	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
 
 	// The vertex buffer object (VBO) can be unbound before the vertex array object (VAO) is unbound because
 	// the call to glVertexAttribPointer registers the VBO as the VAO's currently bound vertex buffer object.
@@ -365,21 +354,11 @@ void Pink::Renderer::render()
 		containerShader.setInteger("material.specular", 1);
 		containerShader.setFloat("material.shininess", 32.0f);
 
-		glm::vec3 lightColor = glm::vec3(1.0f);
-		lightColor.r = static_cast<float>(sin(glfwGetTime() * 2.0f));
-		lightColor.g = static_cast<float>(sin(glfwGetTime() * 0.7f));
-		lightColor.b = static_cast<float>(sin(glfwGetTime() * 1.3f));
-
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
-		containerShader.setVector3("light.position", lightPosition);
-		containerShader.setVector3("light.ambient", ambientColor);
-		containerShader.setVector3("light.diffuse", diffuseColor);
+		containerShader.setVector3("light.direction", -0.2f, -1.0f, -0.3f);
+		containerShader.setVector3("light.ambient", 0.2f, 0.2f, 0.2f);
+		containerShader.setVector3("light.diffuse", 0.5f, 0.5f, 0.5f);
 		containerShader.setVector3("light.specular", 1.0f, 1.0f, 1.0f);
 
-		containerShader.setVector3("lightColor", 1.0f, 1.0f, 1.0f);
-		containerShader.setVector3("lightPosition", lightPosition);
 		containerShader.setVector3("viewPosition", camera.position);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -389,27 +368,19 @@ void Pink::Renderer::render()
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		glBindVertexArray(containerVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//
-		// Draw light cube.
-		//
-		lightPosition.x = 1.0f + sin(currentFrameTime) * 2.0f;
-		lightPosition.y = static_cast<float>(sin(currentFrameTime * 0.5));
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
 
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPosition);
-		model = glm::scale(model, glm::vec3(0.2f));
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-		lightShader.use();
-		lightShader.setMatrix4("model", glm::value_ptr(model));
-		lightShader.setMatrix4("view", glm::value_ptr(view));
-		lightShader.setMatrix4("projection", glm::value_ptr(projection));
-		
-		lightShader.setVector3("lightColor", lightColor);
+			containerShader.setMatrix4("model", model);
 
-		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
@@ -423,7 +394,6 @@ void Pink::Renderer::render()
 	}
 
 	glDeleteVertexArrays(1, &containerVAO);
-	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteBuffers(1, &vbo);
 }
 

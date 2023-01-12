@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include <GLAD/glad.h>
+#include "GLM/gtc/type_ptr.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -132,6 +133,11 @@ void Pink::Shader::setInteger(const std::string& name, int value) const
 void Pink::Shader::setMatrix4(const std::string& name, const float* value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, value);
+}
+
+void Pink::Shader::setMatrix4(const std::string& name, const glm::mat4& value) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 void Pink::Shader::setVector3(const std::string& name, float x, float y, float z) const

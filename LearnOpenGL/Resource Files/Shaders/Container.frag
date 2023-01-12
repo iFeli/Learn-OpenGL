@@ -9,7 +9,9 @@ struct Material
 
 struct Light
 {
-	vec3 position;
+// No longer needed since this light will work as a directional light.
+//	vec3 position; 
+	vec3 direction;
 
 	vec3 ambient;
 	vec3 diffuse;
@@ -31,7 +33,7 @@ void main()
 {
 	// Normal and light direction.
 	vec3 normalizedNormal = normalize(normal);
-	vec3 lightDirection = normalize(light.position - position);
+	vec3 lightDirection = normalize(-light.direction);
 
 	// Diffuse.
 	float diffuseImpact = max(dot(normal, lightDirection), 0.0);
