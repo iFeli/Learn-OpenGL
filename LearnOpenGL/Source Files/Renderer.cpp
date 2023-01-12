@@ -368,9 +368,12 @@ void Pink::Renderer::render()
 		containerShader.setInteger("material.specular", 1);
 		containerShader.setFloat("material.shininess", 32.0f);
 
-		containerShader.setVector3("light.position", lightPosition);
-		containerShader.setVector3("light.ambient", 0.2f, 0.2f, 0.2f);
-		containerShader.setVector3("light.diffuse", 0.5f, 0.5f, 0.5f);
+		containerShader.setVector3("light.position", camera.position);
+		containerShader.setVector3("light.direction", camera.front);
+		containerShader.setFloat("light.cutoff", glm::cos(glm::radians(12.5f)));
+
+		containerShader.setVector3("light.ambient", 0.1f, 0.1f, 0.1f);
+		containerShader.setVector3("light.diffuse", 0.8f, 0.8f, 0.8f);
 		containerShader.setVector3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		containerShader.setFloat("light.constant", 1.0f);
@@ -400,6 +403,7 @@ void Pink::Renderer::render()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
+		/*
 		lightShader.use();
 		lightShader.setMatrix4("projection", projection);
 		lightShader.setMatrix4("view", view);
@@ -412,6 +416,7 @@ void Pink::Renderer::render()
 
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+		*/
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
