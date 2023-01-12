@@ -371,6 +371,7 @@ void Pink::Renderer::render()
 		containerShader.setVector3("light.position", camera.position);
 		containerShader.setVector3("light.direction", camera.front);
 		containerShader.setFloat("light.cutoff", glm::cos(glm::radians(12.5f)));
+		containerShader.setFloat("light.outerCutoff", glm::cos(glm::radians(17.5f)));
 
 		containerShader.setVector3("light.ambient", 0.1f, 0.1f, 0.1f);
 		containerShader.setVector3("light.diffuse", 0.8f, 0.8f, 0.8f);
