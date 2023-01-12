@@ -257,6 +257,7 @@ void Pink::Renderer::render()
 
 	// Create the container VAO, the light VAO, and the VBO.
 	unsigned int containerVAO;
+	unsigned int lightVAO;
 	unsigned int vbo;
 
 	unsigned int positionAttributeIndex = 0;
@@ -264,12 +265,14 @@ void Pink::Renderer::render()
 	unsigned int textureCoordinateAttributeIndex = 2;
 
 	glGenVertexArrays(1, &containerVAO);
+	glGenVertexArrays(1, &lightVAO);
 	glGenBuffers(1, &vbo);
 
 	//
 	// Container
 	// 
 	Shader containerShader = Shader("Resource Files/Shaders/Container.vert", "Resource Files/Shaders/Container.frag");
+	Shader lightShader = Shader("Resource Files/Shaders/Light.vert", "Resource Files/Shaders/Light.frag");
 
 	unsigned int diffuseMap = loadTexture("Resource Files/Textures/WoodenBox_Diffuse.png");
 	unsigned int specularMap = loadTexture("Resource Files/Textures/WoodenBox_Specular.png");
@@ -277,6 +280,7 @@ void Pink::Renderer::render()
 	// Set up the container VAO.
 	glBindVertexArray(containerVAO);
 
+	// Vertex data.
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -297,6 +301,16 @@ void Pink::Renderer::render()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	// The vertex array object (VAO) is unbound in order to avoid accidentally modifying it with subsequent calls.
+	glBindVertexArray(0);
+
+	// Set up the light VAO.
+	glBindVertexArray(lightVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	glEnableVertexAttribArray(positionAttributeIndex);
+	glVertexAttribPointer(positionAttributeIndex, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
+
 	glBindVertexArray(0);
 
 	// FPS and frame time calculations.
@@ -354,10 +368,14 @@ void Pink::Renderer::render()
 		containerShader.setInteger("material.specular", 1);
 		containerShader.setFloat("material.shininess", 32.0f);
 
-		containerShader.setVector3("light.direction", -0.2f, -1.0f, -0.3f);
+		containerShader.setVector3("light.position", lightPosition);
 		containerShader.setVector3("light.ambient", 0.2f, 0.2f, 0.2f);
 		containerShader.setVector3("light.diffuse", 0.5f, 0.5f, 0.5f);
 		containerShader.setVector3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		containerShader.setFloat("light.constant", 1.0f);
+		containerShader.setFloat("light.linear", 0.09f);
+		containerShader.setFloat("light.quadratic", 0.032f);
 
 		containerShader.setVector3("viewPosition", camera.position);
 
@@ -382,6 +400,19 @@ void Pink::Renderer::render()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
+		lightShader.use();
+		lightShader.setMatrix4("projection", projection);
+		lightShader.setMatrix4("view", view);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPosition);
+		model = glm::scale(model, glm::vec3(0.2f));
+		
+		lightShader.setMatrix4("model", model);
+
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
 
@@ -394,6 +425,7 @@ void Pink::Renderer::render()
 	}
 
 	glDeleteVertexArrays(1, &containerVAO);
+	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteBuffers(1, &vbo);
 }
 

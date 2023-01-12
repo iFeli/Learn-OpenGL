@@ -9,13 +9,15 @@ struct Material
 
 struct Light
 {
-// No longer needed since this light will work as a directional light.
-//	vec3 position; 
-	vec3 direction;
+	vec3 position; 
 
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
 in vec2 textureCoordinates;
@@ -33,20 +35,28 @@ void main()
 {
 	// Normal and light direction.
 	vec3 normalizedNormal = normalize(normal);
-	vec3 lightDirection = normalize(-light.direction);
+	vec3 lightDirection = normalize(-light.position - position);
 
 	// Diffuse.
 	float diffuseImpact = max(dot(normal, lightDirection), 0.0);
-	vec3 diffuse = light.diffuse * diffuseImpact * vec3(texture(material.diffuse, textureCoordinates));
+	vec3 diffuse = light.diffuse * diffuseImpact * texture(material.diffuse, textureCoordinates).rgb;
 
 	// Ambient.
-	vec3 ambient = light.ambient * vec3(texture(material.diffuse, textureCoordinates));
+	vec3 ambient = light.ambient * texture(material.diffuse, textureCoordinates).rgb;
 
 	// Specular.
 	vec3 viewDirection = normalize(viewPosition - position);
 	vec3 reflectDirection = reflect(-lightDirection, normal);
 	float specularValue = pow(max(dot(viewDirection, reflectDirection), 0.0), material.shininess);
-	vec3 specular = light.specular * specularValue * vec3(texture(material.specular, textureCoordinates));
+	vec3 specular = light.specular * specularValue * texture(material.specular, textureCoordinates).rgb;
+
+	// Attenuation.
+	float distance = length(light.position - position);
+	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+	diffuse *= attenuation;
+	ambient *= attenuation;
+	specular *= attenuation;
 
 	// Final color.
 	vec3 result = ambient + diffuse + specular;
