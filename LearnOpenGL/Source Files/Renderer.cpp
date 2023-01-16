@@ -245,6 +245,13 @@ void Pink::Renderer::render()
 		glm::vec3(1.5f,  0.2f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
+	
+	glm::vec3 pointLightPositions[] = {
+		glm::vec3( 0.7f,  0.2f,  2.0f),
+		glm::vec3( 2.3f, -3.3f, -4.0f),
+		glm::vec3(-4.0f,  2.0f, -12.0f),
+		glm::vec3( 0.0f,  0.0f,  -3.0f),
+	};
 
 	// Light position.
 	glm::vec3 lightPosition = glm::vec3(1.2f, 1.0f, 2.0f);
@@ -313,6 +320,12 @@ void Pink::Renderer::render()
 
 	glBindVertexArray(0);
 
+	// Shader set up.
+	containerShader.use();
+	containerShader.setInteger("material.diffuse", 0);
+	containerShader.setInteger("material.specular", 1);
+	containerShader.setFloat("material.shininess", 32.0f);
+
 	// FPS and frame time calculations.
 	double lastTime = glfwGetTime();
 	int numberOfFrames = 0;
@@ -364,22 +377,53 @@ void Pink::Renderer::render()
 		containerShader.setMatrix4("view", glm::value_ptr(view));
 		containerShader.setMatrix4("projection", glm::value_ptr(projection));
 
-		containerShader.setInteger("material.diffuse", 0);
-		containerShader.setInteger("material.specular", 1);
-		containerShader.setFloat("material.shininess", 32.0f);
+		containerShader.setVector3("directionalLight.direction", -0.2f, -1.0f, -0.3f);
+		containerShader.setVector3("directionalLight.ambient", 0.05f, 0.05f, 0.05f);
+		containerShader.setVector3("directionalLight.diffuse", 0.4f, 0.4f, 0.4f);
+		containerShader.setVector3("directionalLight.specular", 0.5f, 0.5f, 0.5f);
 
-		containerShader.setVector3("light.position", camera.position);
-		containerShader.setVector3("light.direction", camera.front);
-		containerShader.setFloat("light.cutoff", glm::cos(glm::radians(12.5f)));
-		containerShader.setFloat("light.outerCutoff", glm::cos(glm::radians(17.5f)));
+		containerShader.setVector3("pointLights[0].position", pointLightPositions[0]);
+		containerShader.setVector3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+		containerShader.setVector3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+		containerShader.setVector3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setFloat("pointLights[0].constant", 1.0f);
+		containerShader.setFloat("pointLights[0].linear", 0.09f);
+		containerShader.setFloat("pointLights[0].quadratic", 0.032f);
 
-		containerShader.setVector3("light.ambient", 0.1f, 0.1f, 0.1f);
-		containerShader.setVector3("light.diffuse", 0.8f, 0.8f, 0.8f);
-		containerShader.setVector3("light.specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setVector3("pointLights[1].position", pointLightPositions[1]);
+		containerShader.setVector3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+		containerShader.setVector3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+		containerShader.setVector3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setFloat("pointLights[1].constant", 1.0f);
+		containerShader.setFloat("pointLights[1].linear", 0.09f);
+		containerShader.setFloat("pointLights[1].quadratic", 0.032f);
 
-		containerShader.setFloat("light.constant", 1.0f);
-		containerShader.setFloat("light.linear", 0.09f);
-		containerShader.setFloat("light.quadratic", 0.032f);
+		containerShader.setVector3("pointLights[2].position", pointLightPositions[2]);
+		containerShader.setVector3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+		containerShader.setVector3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+		containerShader.setVector3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setFloat("pointLights[2].constant", 1.0f);
+		containerShader.setFloat("pointLights[2].linear", 0.09f);
+		containerShader.setFloat("pointLights[2].quadratic", 0.032f);
+
+		containerShader.setVector3("pointLights[3].position", pointLightPositions[3]);
+		containerShader.setVector3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+		containerShader.setVector3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+		containerShader.setVector3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setFloat("pointLights[3].constant", 1.0f);
+		containerShader.setFloat("pointLights[3].linear", 0.09f);
+		containerShader.setFloat("pointLights[3].quadratic", 0.032f);
+
+		containerShader.setVector3("spotLight.position", camera.position);
+		containerShader.setVector3("spotLight.direction", camera.front);
+		containerShader.setVector3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+		containerShader.setVector3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+		containerShader.setVector3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+		containerShader.setFloat("spotLight.constant", 1.0f);
+		containerShader.setFloat("spotLight.linear", 0.09f);
+		containerShader.setFloat("spotLight.quadratic", 0.032f);
+		containerShader.setFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
+		containerShader.setFloat("spotLight.outerCutoff", glm::cos(glm::radians(15.0f)));
 
 		containerShader.setVector3("viewPosition", camera.position);
 
@@ -390,7 +434,8 @@ void Pink::Renderer::render()
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
 		glBindVertexArray(containerVAO);
-
+		
+		// Draw container cubes.
 		for (unsigned int i = 0; i < 10; i++)
 		{
 			model = glm::mat4(1.0f);
@@ -404,20 +449,23 @@ void Pink::Renderer::render()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		/*
+		// Draw light cubes.
 		lightShader.use();
 		lightShader.setMatrix4("projection", projection);
 		lightShader.setMatrix4("view", view);
 
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPosition);
-		model = glm::scale(model, glm::vec3(0.2f));
-		
-		lightShader.setMatrix4("model", model);
-
 		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		*/
+
+		for (unsigned int i = 0; i < 4; i++)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, pointLightPositions[i]);
+			model = glm::scale(model, glm::vec3(0.2f));
+
+			lightShader.setMatrix4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}		
 
 		// After rendering our frame in OpenGL, create our ImGui UI.
 		userInterface->draw();
