@@ -1,12 +1,17 @@
 #include "Settings.h"
 
-/*
-*
-* Constructor & Destructor
-*
-*/
-Pink::Settings::Settings(int maximumVertexAttributes) :
-	maximumVertexAttributes(maximumVertexAttributes)
+namespace Pink
 {
+
+	/*
+	*
+	* Constructor & Destructor
+	*
+	*/
+	Settings::Settings(int maximumVertexAttributes) :
+		maximumVertexAttributes(maximumVertexAttributes)
+	{
+
+	}
 
 }

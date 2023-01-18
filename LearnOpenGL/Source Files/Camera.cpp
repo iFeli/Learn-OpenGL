@@ -1,136 +1,140 @@
 #include "Camera.h"
 
-/*
-*
-* Constructor & Destructor
-*
-*/
-Pink::Camera::Camera(
-	glm::vec3 position, 
-	glm::vec3 worldUp,
-	float pitch, 
-	float yaw
-) :
-	front(glm::vec3(0.0f, 0.0f, -1.0f)),
-	position(position), 
-	worldUp(worldUp),
-	mouseSensitivity(SENSITIVITY),
-	movementSpeed(SPEED),
-	pitch(pitch), 
-	yaw(yaw),
-	zoom(ZOOM)
-{
-	updateCameraVectors();
-}
+namespace Pink {
 
-Pink::Camera::Camera(
-	float positionX, float positionY, float positionZ, 
-	float worldUpX, float worldUpY, float worldUpZ, 
-	float yaw, float pitch
-) :
-	front(glm::vec3(0.0f, 0.0f, -1.0f)),
-	position(glm::vec3(positionX, positionY, positionZ)),
-	worldUp(glm::vec3(worldUpX, worldUpY, worldUpZ)),
-	mouseSensitivity(SENSITIVITY),
-	movementSpeed(SPEED),
-	pitch(pitch),
-	yaw(yaw),
-	zoom(ZOOM)
-{
-	updateCameraVectors();
-}
-
-/*
-*
-* Private Methods
-*
-*/
-void Pink::Camera::updateCameraVectors()
-{
-	// Calculate the front vector.
-	glm::vec3 newFront;
-	newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	newFront.y = sin(glm::radians(pitch));
-	newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-
-	front = glm::normalize(newFront);
-
-	// Recalculate the right and up vectors.
-	right = glm::normalize(glm::cross(front, worldUp));
-	up = glm::normalize(glm::cross(right, front));
-}
-
-/*
-*
-* Public Methods
-*
-*/
-
-glm::mat4 Pink::Camera::getViewMatrix()
-{
-	return glm::lookAt(position, position + front, up);
-}
-
-void Pink::Camera::processKeyboard(CameraMovement direction, float deltaTime)
-{
-	float velocity = movementSpeed * deltaTime;
-
-	if (direction == FORWARD)
+	/*
+	*
+	* Constructor & Destructor
+	*
+	*/
+	Camera::Camera(
+		glm::vec3 position,
+		glm::vec3 worldUp,
+		float pitch,
+		float yaw
+	) :
+		front(glm::vec3(0.0f, 0.0f, -1.0f)),
+		position(position),
+		worldUp(worldUp),
+		mouseSensitivity(SENSITIVITY),
+		movementSpeed(SPEED),
+		pitch(pitch),
+		yaw(yaw),
+		zoom(ZOOM)
 	{
-		position += front * velocity;
+		updateCameraVectors();
 	}
 
-	if (direction == BACKWARD)
+	Camera::Camera(
+		float positionX, float positionY, float positionZ,
+		float worldUpX, float worldUpY, float worldUpZ,
+		float yaw, float pitch
+	) :
+		front(glm::vec3(0.0f, 0.0f, -1.0f)),
+		position(glm::vec3(positionX, positionY, positionZ)),
+		worldUp(glm::vec3(worldUpX, worldUpY, worldUpZ)),
+		mouseSensitivity(SENSITIVITY),
+		movementSpeed(SPEED),
+		pitch(pitch),
+		yaw(yaw),
+		zoom(ZOOM)
 	{
-		position -= front * velocity;
+		updateCameraVectors();
 	}
 
-	if (direction == LEFT)
+	/*
+	*
+	* Private Methods
+	*
+	*/
+	void Camera::updateCameraVectors()
 	{
-		position -= right * velocity;
+		// Calculate the front vector.
+		glm::vec3 newFront;
+		newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		newFront.y = sin(glm::radians(pitch));
+		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+		front = glm::normalize(newFront);
+
+		// Recalculate the right and up vectors.
+		right = glm::normalize(glm::cross(front, worldUp));
+		up = glm::normalize(glm::cross(right, front));
 	}
 
-	if (direction == RIGHT)
+	/*
+	*
+	* Public Methods
+	*
+	*/
+
+	glm::mat4 Camera::getViewMatrix()
 	{
-		position += right * velocity;
+		return glm::lookAt(position, position + front, up);
 	}
-}
 
-void Pink::Camera::processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch)
-{
-	xOffset *= mouseSensitivity;
-	yOffset *= mouseSensitivity;
-
-	yaw += xOffset;
-	pitch += yOffset;
-
-	// Make sure that, when the pitch is out of bounds, the screen doesn't get flipped.
-	if (constrainPitch)
+	void Camera::processKeyboard(CameraMovement direction, float deltaTime)
 	{
-		if (pitch > 89.0f)
+		float velocity = movementSpeed * deltaTime;
+
+		if (direction == FORWARD)
 		{
-			pitch = 89.0f;
-		} 
-		else if (pitch < -89.0f)
+			position += front * velocity;
+		}
+
+		if (direction == BACKWARD)
 		{
-			pitch = -89.0f;
+			position -= front * velocity;
+		}
+
+		if (direction == LEFT)
+		{
+			position -= right * velocity;
+		}
+
+		if (direction == RIGHT)
+		{
+			position += right * velocity;
 		}
 	}
 
-	// Update front, right, and up vectors using the updated Euler angles.
-	updateCameraVectors();
-}
-
-void Pink::Camera::processMouseScroll(float yOffset)
-{
-	zoom -= static_cast<float>(yOffset);
-
-	if (zoom < 1.0f)
+	void Camera::processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch)
 	{
-		zoom = 1.0f;
-	} 
-	else if (zoom > 45.0f)
-	{
-		zoom = 45.0f;
+		xOffset *= mouseSensitivity;
+		yOffset *= mouseSensitivity;
+
+		yaw += xOffset;
+		pitch += yOffset;
+
+		// Make sure that, when the pitch is out of bounds, the screen doesn't get flipped.
+		if (constrainPitch)
+		{
+			if (pitch > 89.0f)
+			{
+				pitch = 89.0f;
+			}
+			else if (pitch < -89.0f)
+			{
+				pitch = -89.0f;
+			}
+		}
+
+		// Update front, right, and up vectors using the updated Euler angles.
+		updateCameraVectors();
 	}
+
+	void Camera::processMouseScroll(float yOffset)
+	{
+		zoom -= static_cast<float>(yOffset);
+
+		if (zoom < 1.0f)
+		{
+			zoom = 1.0f;
+		}
+		else if (zoom > 45.0f)
+		{
+			zoom = 45.0f;
+		}
+	}
+
 }

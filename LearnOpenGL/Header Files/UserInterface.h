@@ -7,26 +7,26 @@
 
 namespace Pink
 {
-	class UserInterface;
+
+	class UserInterface
+	{
+	private:
+		Settings* const settings;
+		GLFWwindow* const window;
+
+		void drawInfo();
+		void drawOpenGLSettings();
+
+	public:
+		UserInterface(Settings* const settings, GLFWwindow* const window);
+		~UserInterface();
+
+		void draw();
+		void newFrame();
+		void render();
+		void style();
+	};
+
 }
-
-class Pink::UserInterface
-{
-private:
-	Settings* const settings;
-	GLFWwindow* const window;
-
-	void drawInfo();
-	void drawOpenGLSettings();
-
-public:
-	UserInterface(Settings* const settings, GLFWwindow* const window);
-	~UserInterface();
-
-	void draw();
-	void newFrame();
-	void render();
-	void style();
-};
 
 #endif

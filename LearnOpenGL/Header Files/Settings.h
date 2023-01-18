@@ -5,18 +5,18 @@
 
 namespace Pink
 {
-	class Settings;
+
+	class Settings
+	{
+	public:
+		Settings(int maximumVertexAttributes);
+
+		const int maximumVertexAttributes;
+
+		int fps = 0;
+		float frameTime = 0.0f;
+	};
+
 }
-
-class Pink::Settings
-{
-public:
-	Settings(int maximumVertexAttributes);
-
-	const int maximumVertexAttributes;
-
-	int fps = 0;
-	float frameTime = 0.0f;
-};
 
 #endif
