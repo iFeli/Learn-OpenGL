@@ -5,6 +5,8 @@
 #include "Shader.h"
 #include "UserInterface.h"
 
+#include "ModelLoading.h"
+
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
 #include "GLM/gtc/type_ptr.hpp"
@@ -39,6 +41,7 @@ namespace Pink
 	float lastFrameTime = 0.0f;
 
 	bool wireframeMode = false;
+	bool enableCursor = false;
 
 	/*
 	*
@@ -72,7 +75,7 @@ namespace Pink
 		glfwSetKeyCallback(window, key_callback);
 		glfwSetCursorPosCallback(window, mouse_callback);
 		glfwSetScrollCallback(window, scroll_callback);
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(window, GLFW_CURSOR, enableCursor ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -200,19 +203,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		//
-		// Container
-		// 
-		Shader modelShader = Shader("Resource Files/Shaders/Model.vert", "Resource Files/Shaders/Model.frag");
-
-		// Shader set up.
-		modelShader.use();
-		modelShader.setInteger("material.diffuse", 0);
-		modelShader.setInteger("material.specular", 1);
-		modelShader.setFloat("material.shininess", 32.0f);
-
-		// Backpack model.
-		Model backpackModel = Model("Resource Files/Models/Backpack/backpack.obj");
+		Scene* scene = new ModelLoading();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();
@@ -257,15 +248,7 @@ namespace Pink
 			glm::mat4 view = camera.getViewMatrix();
 			glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), aspectRatio, 0.1f, 100.0f);
 
-			//
-			// Draw container cube.
-			//
-			modelShader.use();
-			modelShader.setMatrix4("model", glm::value_ptr(model));
-			modelShader.setMatrix4("view", glm::value_ptr(view));
-			modelShader.setMatrix4("projection", glm::value_ptr(projection));
-
-			backpackModel.draw(modelShader);
+			scene->draw(model, view, projection);
 
 			// After rendering our frame in OpenGL, create our ImGui UI.
 			userInterface->draw();
@@ -277,6 +260,8 @@ namespace Pink
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
+
+		delete scene;
 	}
 
 	/*
@@ -297,6 +282,13 @@ namespace Pink
 
 			// Toggle wireframe mode.
 			glPolygonMode(GL_FRONT_AND_BACK, wireframeMode ? GL_LINE : GL_FILL);
+		}
+
+		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+		{
+			enableCursor = !enableCursor;
+
+			glfwSetInputMode(window, GLFW_CURSOR, enableCursor ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 		}
 	}
 
@@ -319,12 +311,18 @@ namespace Pink
 		lastMouseXPosition = xPositionFloat;
 		lastMouseYPosition = yPositionFloat;
 
-		camera.processMouseMovement(xOffset, yOffset);
+		if (!enableCursor)
+		{
+			camera.processMouseMovement(xOffset, yOffset);
+		}
 	}
 
 	void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 	{
-		camera.processMouseScroll(static_cast<float>(yOffset));
+		if (enableCursor)
+		{
+			camera.processMouseScroll(static_cast<float>(yOffset));
+		}
 	}
 
 }

@@ -44,11 +44,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Header Files;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Library;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Scenes;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Header Files;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Library;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Header Files;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Library;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Scenes;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Header Files;C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Library;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\iFeli\OneDrive\Felipe\Dev\LearnOpenGL\LearnOpenGL\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,6 +91,7 @@
     <ClCompile Include="Library\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
+    <ClCompile Include="Scenes\StencilTest.h" />
     <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
     <ClCompile Include="Source Files\Mesh.cpp" />
@@ -206,6 +207,8 @@
     <ClInclude Include="Library\ImGui\imstb_truetype.h" />
     <ClInclude Include="Library\KHR\khrplatform.h" />
     <ClInclude Include="Library\STB Image\stb_image.h" />
+    <ClInclude Include="Scenes\ModelLoading.h" />
+    <ClInclude Include="Scenes\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\Assimp\color4.inl" />

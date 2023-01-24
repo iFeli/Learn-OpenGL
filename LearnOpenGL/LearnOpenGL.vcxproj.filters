@@ -55,6 +55,9 @@
     <Filter Include="Resource Files\Models\Backpack">
       <UniqueIdentifier>{161ff882-13c0-4264-9c27-926b133e9cdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{0aa2e77b-2466-4088-a099-d2df58524ee6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="Source Files\Model.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\StencilTest.h">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +430,12 @@
     </ClInclude>
     <ClInclude Include="Header Files\Mesh.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ModelLoading.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
