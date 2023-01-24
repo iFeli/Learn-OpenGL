@@ -1,6 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <GLAD/glad.h>
 #include <GLM/glm.hpp>
 
 #include <string>
@@ -11,7 +12,7 @@ namespace Pink
 	class Shader
 	{
 	public:
-		unsigned int id;
+		GLuint id;
 
 		Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
 		~Shader();

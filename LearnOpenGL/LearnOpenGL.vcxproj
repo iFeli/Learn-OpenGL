@@ -108,7 +108,9 @@
     <ClInclude Include="Header Files\Renderer.h" />
     <ClInclude Include="Header Files\Settings.h" />
     <ClInclude Include="Header Files\Shader.h" />
+    <ClInclude Include="Header Files\Texture.h" />
     <ClInclude Include="Header Files\UserInterface.h" />
+    <ClInclude Include="Header Files\Vertex.h" />
     <ClInclude Include="Library\Assimp\aabb.h" />
     <ClInclude Include="Library\Assimp\ai_assert.h" />
     <ClInclude Include="Library\Assimp\anim.h" />
@@ -220,6 +222,8 @@
     <None Include="Library\Assimp\SmoothingGroups.inl" />
     <None Include="Library\Assimp\vector2.inl" />
     <None Include="Library\Assimp\vector3.inl" />
+    <None Include="Resource Files\Shaders\Basic.frag" />
+    <None Include="Resource Files\Shaders\Basic.vert" />
     <None Include="Resource Files\Shaders\Container.frag" />
     <None Include="Resource Files\Shaders\Container.vert" />
     <None Include="Resource Files\Shaders\Light.frag" />

@@ -51,8 +51,8 @@ namespace Pink
 		const char* vertexShaderCString = vertexShaderString.c_str();
 		const char* fragmentShaderCString = fragmentShaderString.c_str();
 
-		unsigned int vertexShader;
-		unsigned int fragmentShader;
+		GLuint vertexShader;
+		GLuint fragmentShader;
 
 		int success;
 		const unsigned int infoLogLength = 512;

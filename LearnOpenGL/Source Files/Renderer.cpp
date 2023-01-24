@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "UserInterface.h"
 
-#include "ModelLoading.h"
+#include "StencilTest.h"
 
 #include "GLM/glm.hpp"
 #include "GLM/gtc/matrix_transform.hpp"
@@ -32,7 +32,7 @@ namespace Pink
 	*  Variables
 	*
 	*/
-	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+	Camera camera(glm::vec3(0.0f, 1.0f, 10.0f));
 	float lastMouseXPosition = 0.0f;
 	float lastMouseYPosition = 0.0f;
 	bool firstMousePosition = true;
@@ -101,9 +101,9 @@ namespace Pink
 	* Private Methods
 	*
 	*/
-	unsigned int Pink::Renderer::loadTexture(char const* path)
+	GLuint Pink::Renderer::loadTexture(char const* path)
 	{
-		unsigned int textureID;
+		GLuint textureID;
 		glGenTextures(1, &textureID);
 
 		int width;
@@ -203,7 +203,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		Scene* scene = new ModelLoading();
+		Scene* scene = new StencilTest();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();

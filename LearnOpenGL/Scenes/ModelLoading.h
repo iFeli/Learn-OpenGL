@@ -1,7 +1,6 @@
 #ifndef MODEL_LOADING_H
 #define MODEL_LOADING_H
 
-#include "GLM/glm.hpp"
 #include "GLM/gtc/type_ptr.hpp"
 
 #include "Model.h"
@@ -32,7 +31,7 @@ namespace Pink
 		void draw(const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 		{
 			//
-			// Draw container cube.
+			// Draw the backpack loaded from a file.
 			//
 			modelShader.use();
 			modelShader.setMatrix4("model", glm::value_ptr(model));

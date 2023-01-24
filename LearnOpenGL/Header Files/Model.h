@@ -4,6 +4,7 @@
 #include <Assimp/Importer.hpp>
 #include <Assimp/postprocess.h>
 #include <Assimp/scene.h>
+#include <GLAD/glad.h>
 
 #include <string>
 #include <vector>
@@ -18,6 +19,7 @@ namespace Pink
 	{
 	public:
 		Model(const char* path);
+		~Model();
 
 		void draw(Shader& shader);
 
@@ -30,7 +32,7 @@ namespace Pink
 		void loadModel(std::string path);
 		Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 		void processNode(aiNode* node, const aiScene* scene);
-		unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma = false);
+		GLuint textureFromFile(const char* path, const std::string& directory, bool gamma = false);
 	};
 
 }

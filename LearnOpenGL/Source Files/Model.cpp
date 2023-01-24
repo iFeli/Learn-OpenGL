@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "Texture.h"
+
 namespace Pink
 {
 
@@ -17,6 +19,17 @@ namespace Pink
 	Model::Model(const char* path)	
 	{
 		loadModel(path);
+	}
+
+	Model::~Model()
+	{
+		for (Mesh mesh : meshes)
+		{
+			for (Texture texture : mesh.textures)
+			{
+				glDeleteTextures(1, &texture.id);
+			}
+		}
 	}
 
 	/*
@@ -88,7 +101,7 @@ namespace Pink
 		{
 			Vertex vertex;
 
-			glm::vec3 vector3;
+			glm::vec3 vector3 = glm::vec3(0.0f);
 			
 			vector3.x = mesh->mVertices[i].x;
 			vector3.y = mesh->mVertices[i].y;
@@ -107,7 +120,7 @@ namespace Pink
 
 			if (mesh->mTextureCoords[0])
 			{
-				glm::vec2 vector2;
+				glm::vec2 vector2 = glm::vec2(0.0f);
 				vector2.x = mesh->mTextureCoords[0][i].x;
 				vector2.y = mesh->mTextureCoords[0][i].y;
 
@@ -158,13 +171,13 @@ namespace Pink
 			processNode(node->mChildren[i], scene);
 		}
 	}
-
-	unsigned int Model::textureFromFile(const char* path, const std::string& directory, bool gamma)
+	
+	GLuint Model::textureFromFile(const char* path, const std::string& directory, bool gamma)
 	{
 		std::string filename = std::string(path);
 		filename = directory + '/' + filename;
 
-		unsigned int textureID;
+		GLuint textureID;
 		glGenTextures(1, &textureID);
 
 		int width;
@@ -172,7 +185,7 @@ namespace Pink
 		int numberOfComponents;
 
 		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &numberOfComponents, 0);
-		
+
 		if (data)
 		{
 			GLenum format = GL_RGBA;
@@ -185,7 +198,7 @@ namespace Pink
 			{
 				format = GL_RGB;
 			}
-			
+
 			glBindTexture(GL_TEXTURE_2D, textureID);
 			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);

@@ -14,6 +14,13 @@ namespace Pink
 
 	class Renderer
 	{
+	public:
+		Renderer(int width, int height);
+		~Renderer();
+
+		int maximumVertexAttributes();
+		void render();
+
 	private:
 		Settings* settings;
 		UserInterface* userInterface = nullptr;
@@ -25,16 +32,9 @@ namespace Pink
 		float deltaTime = 0.0f;
 		float lastFrameTime = 0.0f;
 
-		unsigned int loadTexture(char const* path);
+		GLuint loadTexture(char const* path);
 		void processInput();
 		void processUI();
-
-	public:
-		Renderer(int width, int height);
-		~Renderer();
-
-		int maximumVertexAttributes();
-		void render();
 	};
 
 }

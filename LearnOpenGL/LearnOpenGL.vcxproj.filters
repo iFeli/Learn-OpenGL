@@ -437,6 +437,12 @@
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Header Files\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource Files\Shaders\Container.frag">
@@ -482,6 +488,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resource Files\Shaders\Model.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Basic.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Basic.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -50,7 +50,7 @@ namespace Pink {
 	void Camera::updateCameraVectors()
 	{
 		// Calculate the front vector.
-		glm::vec3 newFront;
+		glm::vec3 newFront = glm::vec3(0.0f);
 		newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 		newFront.y = sin(glm::radians(pitch));
 		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));

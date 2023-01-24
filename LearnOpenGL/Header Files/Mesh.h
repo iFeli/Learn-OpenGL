@@ -1,49 +1,34 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <GLAD/glad.h>
 #include <GLM/glm.hpp>
 
 #include <string>
 #include <vector>
 
 #include "Shader.h"
+#include "Texture.h"
+#include "Vertex.h"
 
 namespace Pink
 {
-	struct Vertex 
-	{
-		glm::vec3 position;
-		glm::vec3 normal;
-		glm::vec2 textureCoordinates;
-	};
-
-	struct Texture
-	{
-		enum Type {
-			DIFFUSE,
-			SPECULAR
-		};
-
-		unsigned int id;
-		std::string type;
-		std::string path;
-	};
 
 	class Mesh
 	{
 	public:
 		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<GLuint> indices;
 		std::vector<Texture> textures;
 
-		Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+		Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures);
 
 		void draw(Shader& shader);
 
 	private:
-		unsigned int vao;
-		unsigned int vbo;
-		unsigned int ebo;
+		GLuint vao;
+		GLuint vbo;
+		GLuint ebo;
 
 		void setUpMesh();
 	};

@@ -12,7 +12,7 @@ namespace Pink
 	* Constructor & Destructor
 	*
 	*/
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures) :
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures) :
 		vertices(vertices), indices(indices), textures(textures)
 	{
 		setUpMesh();
@@ -59,8 +59,8 @@ namespace Pink
 	*/
 	void Mesh::draw(Shader& shader)
 	{
-		unsigned int diffuseTextureNumber = 1;
-		unsigned int specularTextureNumber = 1;
+		GLuint diffuseTextureNumber = 1;
+		GLuint specularTextureNumber = 1;
 
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
