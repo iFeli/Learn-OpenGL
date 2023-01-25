@@ -2,11 +2,13 @@
 #define STENCIL_TEST_H
 
 #include <GLAD/glad.h>
-
-#include "GLM/gtc/type_ptr.hpp"
+#include <GLM/gtc/type_ptr.hpp>
+#include <STB Image/stb_image.h>
 
 #include "Scene.h"
 #include "Shader.h"
+
+#include <iostream>
 
 namespace Pink
 {
@@ -14,74 +16,80 @@ namespace Pink
 	class StencilTest : public Scene
 	{
 	private:
+		GLuint cubeTexture;
 		GLuint cubeVAO;
 		GLuint cubeVBO;
+		GLuint floorTexture;
 		GLuint floorVAO;
 		GLuint floorVBO;
+		
+		Shader colorShader;
+		Shader textureShader;
 
-		Shader basicShader;
+		float floorVertices[30] = {
+			 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+			-5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+			-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
 
-		float floorVertices[18] = {
-			 5.0f, -0.5f,  5.0f,
-			-5.0f, -0.5f,  5.0f,
-			-5.0f, -0.5f, -5.0f,
-					   
-			 5.0f, -0.5f,  5.0f,
-			-5.0f, -0.5f, -5.0f,
-			 5.0f, -0.5f, -5.0f
+			 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+			-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+			 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
 		};
 
-		float cubeVertices[108] = {
-			-0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			-0.5f,  0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
+		float cubeVertices[180] = {
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-			-0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
-			-0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-			-0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-			-0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f, -0.5f,
-			 0.5f, -0.5f,  0.5f,
-			 0.5f, -0.5f,  0.5f,
-			-0.5f, -0.5f,  0.5f,
-			-0.5f, -0.5f, -0.5f,
-							   
-			-0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f, -0.5f,
-			 0.5f,  0.5f,  0.5f,
-			 0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f, -0.5f
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 		};
 
 	public: 
 		StencilTest() :
+			cubeTexture(0),
 			cubeVAO(0),
 			cubeVBO(0),
+			floorTexture(0),
 			floorVAO(0),
 			floorVBO(0),
-			basicShader(Shader("Resource Files/Shaders/Basic.vert", "Resource Files/Shaders/Basic.frag"))
+			colorShader(Shader("Resource Files/Shaders/Color.vert", "Resource Files/Shaders/Color.frag")),
+			textureShader(Shader("Resource Files/Shaders/Texture.vert", "Resource Files/Shaders/Texture.frag"))
 		{
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
@@ -93,8 +101,42 @@ namespace Pink
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 			GLuint positionIndex = 0;
+			GLuint textureIndex = 1;
+
+			int width = 0;
+			int height = 0;
+			int numberOfChannels = 0;
+			unsigned char* imageData = nullptr;
+
+			stbi_set_flip_vertically_on_load(true);
 
 			// Cube.
+			glGenTextures(1, &cubeTexture);
+			glBindTexture(GL_TEXTURE_2D, cubeTexture);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+			imageData = stbi_load("Resource Files/Textures/Marble.jpg", &width, &height, &numberOfChannels, 0);
+
+			if (imageData)
+			{
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+			else 
+			{
+				std::cout << "Failed to load the cube texture." << std::endl;
+			}
+
+			stbi_image_free(imageData);
+
+			imageData = nullptr;
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 			glGenVertexArrays(1, &cubeVAO);
 			glGenBuffers(1, &cubeVBO);
 
@@ -103,13 +145,41 @@ namespace Pink
 			glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			glEnableVertexAttribArray(positionIndex);
+			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)0);
+			glEnableVertexAttribArray(textureIndex);
+			glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 
 			// Floor.
+			glGenTextures(1, &floorTexture);
+			glBindTexture(GL_TEXTURE_2D, floorTexture);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+			imageData = stbi_load("Resource Files/Textures/Metal.png", &width, &height, &numberOfChannels, 0);
+
+			if (imageData)
+			{
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+			else
+			{
+				std::cout << "Failed to load the floor texture." << std::endl;
+			}
+
+			stbi_image_free(imageData);
+			
+			imageData = nullptr;
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 			glGenVertexArrays(1, &floorVAO);
 			glGenBuffers(1, &floorVBO);
 
@@ -118,8 +188,10 @@ namespace Pink
 			glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), &floorVertices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 			glEnableVertexAttribArray(positionIndex);
+			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)0);
+			glEnableVertexAttribArray(textureIndex);
+			glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -127,9 +199,11 @@ namespace Pink
 
 		~StencilTest()
 		{
+			glDeleteTextures(1, &cubeTexture);
 			glDeleteBuffers(1, &cubeVBO);
 			glDeleteVertexArrays(1, &cubeVAO);
 
+			glDeleteTextures(1, &floorTexture);
 			glDeleteBuffers(1, &floorVBO);
 			glDeleteVertexArrays(1, &floorVAO);
 		}
@@ -143,15 +217,17 @@ namespace Pink
 			// 
 			// Draw the floor.
 			//
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, floorTexture);
 
 			glBindVertexArray(floorVAO);
 
-			basicShader.use();
-			basicShader.setVector3("color", glm::vec3(0.4f, 0.4f, 0.5f));
+			textureShader.use();
+			textureShader.setInteger("textureSampler", 0);
 
-			basicShader.setMatrix4("model", glm::value_ptr(model));
-			basicShader.setMatrix4("view", glm::value_ptr(view));
-			basicShader.setMatrix4("projection", glm::value_ptr(projection));
+			textureShader.setMatrix4("model", glm::value_ptr(model));
+			textureShader.setMatrix4("view", glm::value_ptr(view));
+			textureShader.setMatrix4("projection", glm::value_ptr(projection));
 
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -160,17 +236,20 @@ namespace Pink
 			//
 			// Draw the cube.
 			//
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, cubeTexture);
+
 			glStencilFunc(GL_ALWAYS, 1, 0xFF);
 			glStencilMask(0xFF);
 
 			glBindVertexArray(cubeVAO);
 
-			basicShader.use();
-			basicShader.setVector3("color", glm::vec3(0.5f, 0.1f, 0.2f));
+			textureShader.use();
+			textureShader.setInteger("textureSampler", 1);
 
-			basicShader.setMatrix4("model", glm::value_ptr(model));
-			basicShader.setMatrix4("view", glm::value_ptr(view));
-			basicShader.setMatrix4("projection", glm::value_ptr(projection));
+			textureShader.setMatrix4("model", glm::value_ptr(model));
+			textureShader.setMatrix4("view", glm::value_ptr(view));
+			textureShader.setMatrix4("projection", glm::value_ptr(projection));
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -186,16 +265,16 @@ namespace Pink
 
 			glBindVertexArray(cubeVAO);
 
-			float scale = 1.1f;
+			float scale = 1.05f;
 			glm::mat4 scaledModel = glm::mat4(1.0f);
 			scaledModel = glm::scale(scaledModel, glm::vec3(scale, scale, scale));
 
-			basicShader.use();
-			basicShader.setVector3("color", glm::vec3(0.2f, 0.1f, 0.5f));
+			colorShader.use();
+			colorShader.setVector3("color", glm::vec3(0.5f, 0.1f, 0.2f));
 
-			basicShader.setMatrix4("model", glm::value_ptr(scaledModel));
-			basicShader.setMatrix4("view", glm::value_ptr(view));
-			basicShader.setMatrix4("projection", glm::value_ptr(projection));
+			colorShader.setMatrix4("model", glm::value_ptr(scaledModel));
+			colorShader.setMatrix4("view", glm::value_ptr(view));
+			colorShader.setMatrix4("projection", glm::value_ptr(projection));
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 

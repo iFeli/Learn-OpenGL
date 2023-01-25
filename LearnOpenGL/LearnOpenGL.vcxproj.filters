@@ -490,25 +490,17 @@
     <None Include="Resource Files\Shaders\Model.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resource Files\Shaders\Basic.vert">
+    <None Include="Resource Files\Shaders\Color.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resource Files\Shaders\Basic.frag">
+    <None Include="Resource Files\Shaders\Color.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resource Files\Textures\Container.jpg">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Resource Files\Textures\AwesomeFace.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Resource Files\Textures\WoodenBox_Diffuse.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Resource Files\Textures\WoodenBox_Specular.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
+    <None Include="Resource Files\Shaders\Texture.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Texture.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

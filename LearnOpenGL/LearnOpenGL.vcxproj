@@ -222,20 +222,16 @@
     <None Include="Library\Assimp\SmoothingGroups.inl" />
     <None Include="Library\Assimp\vector2.inl" />
     <None Include="Library\Assimp\vector3.inl" />
-    <None Include="Resource Files\Shaders\Basic.frag" />
-    <None Include="Resource Files\Shaders\Basic.vert" />
+    <None Include="Resource Files\Shaders\Color.frag" />
+    <None Include="Resource Files\Shaders\Color.vert" />
     <None Include="Resource Files\Shaders\Container.frag" />
     <None Include="Resource Files\Shaders\Container.vert" />
     <None Include="Resource Files\Shaders\Light.frag" />
     <None Include="Resource Files\Shaders\Light.vert" />
     <None Include="Resource Files\Shaders\Model.frag" />
     <None Include="Resource Files\Shaders\Model.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resource Files\Textures\AwesomeFace.png" />
-    <Image Include="Resource Files\Textures\Container.jpg" />
-    <Image Include="Resource Files\Textures\WoodenBox_Diffuse.png" />
-    <Image Include="Resource Files\Textures\WoodenBox_Specular.png" />
+    <None Include="Resource Files\Shaders\Texture.frag" />
+    <None Include="Resource Files\Shaders\Texture.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
