@@ -91,7 +91,7 @@
     <ClCompile Include="Library\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
-    <ClCompile Include="Scenes\StencilTest.h" />
+    <ClCompile Include="Scenes\StencilTest.cpp" />
     <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
     <ClCompile Include="Source Files\Mesh.cpp" />
@@ -209,8 +209,10 @@
     <ClInclude Include="Library\ImGui\imstb_truetype.h" />
     <ClInclude Include="Library\KHR\khrplatform.h" />
     <ClInclude Include="Library\STB Image\stb_image.h" />
+    <ClInclude Include="Scenes\ModelLoading.cpp" />
     <ClInclude Include="Scenes\ModelLoading.h" />
     <ClInclude Include="Scenes\Scene.h" />
+    <ClInclude Include="Scenes\StencilTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\Assimp\color4.inl" />

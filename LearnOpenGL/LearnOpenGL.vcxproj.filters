@@ -58,6 +58,12 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{0aa2e77b-2466-4088-a099-d2df58524ee6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Stencil Test">
+      <UniqueIdentifier>{c18ccb87-42bf-41a2-9c9d-940545d6cebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Model Loading">
+      <UniqueIdentifier>{51a53532-9d24-4ab2-a616-12eb324083e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -111,8 +117,8 @@
     <ClCompile Include="Source Files\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\StencilTest.h">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="Scenes\StencilTest.cpp">
+      <Filter>Scenes\Stencil Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -431,9 +437,6 @@
     <ClInclude Include="Header Files\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\ModelLoading.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -442,6 +445,15 @@
     </ClInclude>
     <ClInclude Include="Header Files\Vertex.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\StencilTest.h">
+      <Filter>Scenes\Stencil Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ModelLoading.cpp">
+      <Filter>Scenes\Model Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ModelLoading.h">
+      <Filter>Scenes\Model Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
