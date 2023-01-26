@@ -64,6 +64,9 @@
     <Filter Include="Scenes\Model Loading">
       <UniqueIdentifier>{51a53532-9d24-4ab2-a616-12eb324083e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Blending">
+      <UniqueIdentifier>{49659a6c-f8ee-486b-91cd-67ce0fef8e1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Scenes\StencilTest.cpp">
       <Filter>Scenes\Stencil Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Blending.cpp">
+      <Filter>Scenes\Blending</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,6 +461,9 @@
     <ClInclude Include="Scenes\ModelLoading.h">
       <Filter>Scenes\Model Loading</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\Blending.h">
+      <Filter>Scenes\Blending</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource Files\Shaders\Container.frag">
@@ -512,6 +521,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resource Files\Shaders\Texture.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Alpha.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\Alpha.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

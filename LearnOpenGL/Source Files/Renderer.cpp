@@ -1,18 +1,17 @@
 #include "Renderer.h"
 
+#include <GLM/glm.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+#include <GLM/gtc/type_ptr.hpp>
+#include <STB Image/stb_image.h>
+
+#include <iostream>
+
+#include "Blending.h"
 #include "Camera.h"
 #include "Model.h"
 #include "Shader.h"
 #include "UserInterface.h"
-
-#include "StencilTest.h"
-
-#include "GLM/glm.hpp"
-#include "GLM/gtc/matrix_transform.hpp"
-#include "GLM/gtc/type_ptr.hpp"
-#include "STB Image/stb_image.h"
-
-#include <iostream>
 
 namespace Pink
 {
@@ -32,6 +31,8 @@ namespace Pink
 	*  Variables
 	*
 	*/
+	Settings* settings;
+
 	Camera camera(glm::vec3(0.0f, 1.0f, 10.0f));
 	float lastMouseXPosition = 0.0f;
 	float lastMouseYPosition = 0.0f;
@@ -40,7 +41,6 @@ namespace Pink
 	float deltaTime = 0.0f;
 	float lastFrameTime = 0.0f;
 
-	bool wireframeMode = false;
 	bool enableCursor = false;
 
 	/*
@@ -85,6 +85,7 @@ namespace Pink
 		}
 
 		settings = new Settings(maximumVertexAttributes());
+
 		userInterface = new UserInterface(settings, window);
 	}
 
@@ -176,7 +177,7 @@ namespace Pink
 
 	void Renderer::processUI()
 	{
-		// Do nothing for now.
+		glPolygonMode(GL_FRONT_AND_BACK, settings->wireframe ? GL_LINE : GL_FILL);
 	}
 
 	/*
@@ -203,7 +204,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		Scene* scene = new StencilTest();
+		Scene* scene = new Blending();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();
@@ -278,10 +279,7 @@ namespace Pink
 	{
 		if (key == GLFW_KEY_M && action == GLFW_PRESS)
 		{
-			wireframeMode = !wireframeMode;
-
-			// Toggle wireframe mode.
-			glPolygonMode(GL_FRONT_AND_BACK, wireframeMode ? GL_LINE : GL_FILL);
+			settings->wireframe = !settings->wireframe;
 		}
 
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)

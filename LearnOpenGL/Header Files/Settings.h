@@ -10,11 +10,12 @@ namespace Pink
 	{
 	public:
 		Settings(int maximumVertexAttributes);
-
+		
 		const int maximumVertexAttributes;
 
-		int fps = 0;
-		float frameTime = 0.0f;
+		int fps;
+		float frameTime;
+		bool wireframe;
 	};
 
 }

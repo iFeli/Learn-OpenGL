@@ -22,7 +22,6 @@ namespace Pink
 		void render();
 
 	private:
-		Settings* settings;
 		UserInterface* userInterface = nullptr;
 		GLFWwindow* window = nullptr;
 

@@ -84,7 +84,7 @@ namespace Pink
 
 		if (ImGui::Begin("OpenGL Settings"))
 		{
-			ImGui::Text("My Settings Here!");
+			ImGui::Checkbox("Wireframe", &(settings->wireframe));
 		}
 
 		ImGui::End();

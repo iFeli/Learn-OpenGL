@@ -9,7 +9,10 @@ namespace Pink
 	*
 	*/
 	Settings::Settings(int maximumVertexAttributes) :
-		maximumVertexAttributes(maximumVertexAttributes)
+		maximumVertexAttributes(maximumVertexAttributes),
+		fps(0), 
+		frameTime(0.0f),
+		wireframe(false)
 	{
 
 	}
