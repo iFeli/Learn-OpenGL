@@ -26,7 +26,7 @@ namespace Pink
 	* Public Methods
 	*
 	*/
-	void ModelLoading::draw(const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
+	void ModelLoading::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 	{
 		//
 		// Draw the backpack loaded from a file.

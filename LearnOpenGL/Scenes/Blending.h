@@ -15,7 +15,7 @@ namespace Pink
 		Blending();
 		~Blending();
 
-		void draw(const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection);
+		void draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection);
 
 	private:
 		GLuint cubeTexture;
@@ -25,11 +25,11 @@ namespace Pink
 
 		GLuint cubeVAO;
 		GLuint floorVAO;
-		GLuint grassVAO;
+		GLuint planeVAO;
 		
 		GLuint cubeVBO;
 		GLuint floorVBO;
-		GLuint grassVBO;
+		GLuint planeVBO;
 
 		Shader alphaShader;
 		Shader textureShader;

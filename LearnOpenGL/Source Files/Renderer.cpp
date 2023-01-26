@@ -249,7 +249,7 @@ namespace Pink
 			glm::mat4 view = camera.getViewMatrix();
 			glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), aspectRatio, 0.1f, 100.0f);
 
-			scene->draw(model, view, projection);
+			scene->draw(camera, model, view, projection);
 
 			// After rendering our frame in OpenGL, create our ImGui UI.
 			userInterface->draw();

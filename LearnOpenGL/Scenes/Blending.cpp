@@ -4,6 +4,7 @@
 #include <STB Image/stb_image.h>
 
 #include <iostream>
+#include <map>
 
 namespace Pink
 {
@@ -20,10 +21,10 @@ namespace Pink
 		windowTexture(0),
 		cubeVAO(0),
 		floorVAO(0),
-		grassVAO(0),
+		planeVAO(0),
 		cubeVBO(0),
 		floorVBO(0),
-		grassVBO(0),
+		planeVBO(0),
 		alphaShader(Shader("Resource Files/Shaders/Alpha.vert", "Resource Files/Shaders/Alpha.frag")),
 		textureShader(Shader("Resource Files/Shaders/Texture.vert", "Resource Files/Shaders/Texture.frag"))
 	{
@@ -32,7 +33,13 @@ namespace Pink
 		//
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 
+		glEnable(GL_LINE_SMOOTH);
+		glLineWidth(3.0f);
+
 		glEnable(GL_DEPTH_TEST);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Variables
 		planePositions.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
@@ -143,6 +150,36 @@ namespace Pink
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		// Window texture.
+		glGenTextures(1, &windowTexture);
+		glBindTexture(GL_TEXTURE_2D, windowTexture);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+		imageData = stbi_load("Resource Files/Textures/Window.png", &width, &height, &numberOfChannels, 0);
+
+		if (imageData)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			std::cout << "Failed to load the window's texture." << std::endl;
+		}
+
+		stbi_image_free(imageData);
+
+		width = 0;
+		height = 0;
+		numberOfChannels = 0;
+		imageData = nullptr;
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		//
 		// Buffers.
 		//
@@ -184,13 +221,13 @@ namespace Pink
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
-		// Grass buffers.
-		glGenVertexArrays(1, &grassVAO);
-		glGenBuffers(1, &grassVBO);
+		// Plane buffers.
+		glGenVertexArrays(1, &planeVAO);
+		glGenBuffers(1, &planeVBO);
 
-		glBindVertexArray(grassVAO);
+		glBindVertexArray(planeVAO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), grassVertices, GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(positionIndex);
@@ -211,11 +248,11 @@ namespace Pink
 
 		glDeleteVertexArrays(1, &cubeVAO);
 		glDeleteVertexArrays(1, &floorVAO);
-		glDeleteVertexArrays(1, &grassVAO);
+		glDeleteVertexArrays(1, &planeVAO);
 
 		glDeleteBuffers(1, &cubeVBO);
 		glDeleteBuffers(1, &floorVBO);
-		glDeleteBuffers(1, &grassVBO);
+		glDeleteBuffers(1, &planeVBO);
 	}
 
 	/*
@@ -223,7 +260,7 @@ namespace Pink
 	* Public Methods
 	*
 	*/
-	void Blending::draw(const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
+	void Blending::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -260,7 +297,7 @@ namespace Pink
 		glBindVertexArray(0);
 
 		// Draw the grass.
-		alphaShader.use();
+		/*alphaShader.use();
 		alphaShader.setInteger("textureSampler", 2);
 
 		alphaShader.setMatrix4("view", view);
@@ -269,7 +306,7 @@ namespace Pink
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, grassTexture);
 
-		glBindVertexArray(grassVAO);
+		glBindVertexArray(planeVAO);
 
 		for (unsigned int i = 0; i < planePositions.size(); i++)
 		{
@@ -279,6 +316,41 @@ namespace Pink
 
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
+
+		glBindVertexArray(0);*/
+		
+		// Draw the windows.
+		textureShader.use();
+		textureShader.setInteger("textureSampler", 3);
+
+		textureShader.setMatrix4("view", view);
+		textureShader.setMatrix4("projection", projection);
+
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, windowTexture);
+
+		glBindVertexArray(planeVAO);
+
+		std::map<float, glm::vec3> sortedPlanePositions;
+
+		for (unsigned int i = 0; i < planePositions.size(); i++)
+		{
+			float distance = glm::length(camera.position - planePositions[i]);
+			sortedPlanePositions[distance] = planePositions[i];
+		}
+
+		for (std::map<float, glm::vec3>::reverse_iterator iterator = sortedPlanePositions.rbegin();
+			iterator != sortedPlanePositions.rend(); 
+			iterator++)
+		{
+			glm::mat4 planeModel = glm::mat4(1.0f);
+			planeModel = glm::translate(planeModel, iterator->second);
+			alphaShader.setMatrix4("model", planeModel);
+
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
+
+		glBindVertexArray(0);
 	}
 
 }

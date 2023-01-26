@@ -145,7 +145,7 @@ namespace Pink
 	* Public Methods
 	*
 	*/
-	void StencilTest::draw(const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
+	void StencilTest::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
