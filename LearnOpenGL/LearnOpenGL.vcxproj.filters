@@ -70,6 +70,9 @@
     <Filter Include="Scenes\Face Culling">
       <UniqueIdentifier>{3e476c0b-1fad-4ee1-96d1-a2f436511266}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Framebuffers">
+      <UniqueIdentifier>{67694b98-a35c-4836-9dca-20b273a59dc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Scenes\FaceCulling.cpp">
       <Filter>Scenes\Face Culling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Framebuffers.cpp">
+      <Filter>Scenes\Framebuffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -473,6 +479,12 @@
     <ClInclude Include="Scenes\FaceCulling.h">
       <Filter>Scenes\Face Culling</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\Framebuffers.h">
+      <Filter>Scenes\Framebuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource Files\Shaders\Container.frag">
@@ -536,6 +548,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resource Files\Shaders\Alpha.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\QuadTexture.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\QuadTexture.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

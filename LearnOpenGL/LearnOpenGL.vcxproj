@@ -93,6 +93,7 @@
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
     <ClCompile Include="Scenes\Blending.cpp" />
     <ClCompile Include="Scenes\FaceCulling.cpp" />
+    <ClCompile Include="Scenes\Framebuffers.cpp" />
     <ClCompile Include="Scenes\StencilTest.cpp" />
     <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Header Files\Shader.h" />
     <ClInclude Include="Header Files\Texture.h" />
     <ClInclude Include="Header Files\UserInterface.h" />
+    <ClInclude Include="Header Files\Variables.h" />
     <ClInclude Include="Header Files\Vertex.h" />
     <ClInclude Include="Library\Assimp\aabb.h" />
     <ClInclude Include="Library\Assimp\ai_assert.h" />
@@ -213,6 +215,7 @@
     <ClInclude Include="Library\STB Image\stb_image.h" />
     <ClInclude Include="Scenes\Blending.h" />
     <ClInclude Include="Scenes\FaceCulling.h" />
+    <ClInclude Include="Scenes\Framebuffers.h" />
     <ClInclude Include="Scenes\ModelLoading.cpp" />
     <ClInclude Include="Scenes\ModelLoading.h" />
     <ClInclude Include="Scenes\Scene.h" />
@@ -230,6 +233,8 @@
     <None Include="Library\Assimp\vector3.inl" />
     <None Include="Resource Files\Shaders\Alpha.frag" />
     <None Include="Resource Files\Shaders\Alpha.vert" />
+    <None Include="Resource Files\Shaders\QuadTexture.frag" />
+    <None Include="Resource Files\Shaders\QuadTexture.vert" />
     <None Include="Resource Files\Shaders\Color.frag" />
     <None Include="Resource Files\Shaders\Color.vert" />
     <None Include="Resource Files\Shaders\Container.frag" />

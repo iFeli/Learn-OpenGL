@@ -1,8 +1,10 @@
 #include "Renderer.h"
 
+#include "Variables.h"
+
 int main() 
 {
-	Pink::Renderer renderer = Pink::Renderer(1600, 1200);
+	Pink::Renderer renderer = Pink::Renderer(Pink::WIDTH, Pink::HEIGHT);
 	renderer.render();
 
 	return 0;

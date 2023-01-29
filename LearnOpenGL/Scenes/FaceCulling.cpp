@@ -24,6 +24,7 @@ namespace Pink
 		glEnable(GL_DEPTH_TEST);
 
 		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
 		glCullFace(GL_FRONT);
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
