@@ -29,9 +29,9 @@ namespace Pink
 		textureShader(Shader("Resource Files/Shaders/Texture.vert", "Resource Files/Shaders/Texture.frag"))
 	{
 		//
-		// OpenGL
+		// OpenGL.
 		//
-		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(3.0f);
@@ -41,7 +41,9 @@ namespace Pink
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// Variables
+		//
+		// Variables.
+		//
 		planePositions.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
 		planePositions.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
 		planePositions.push_back(glm::vec3(0.0f, 0.0f, 0.7f));

@@ -67,6 +67,9 @@
     <Filter Include="Scenes\Blending">
       <UniqueIdentifier>{49659a6c-f8ee-486b-91cd-67ce0fef8e1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Face Culling">
+      <UniqueIdentifier>{3e476c0b-1fad-4ee1-96d1-a2f436511266}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Scenes\Blending.cpp">
       <Filter>Scenes\Blending</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\FaceCulling.cpp">
+      <Filter>Scenes\Face Culling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +469,9 @@
     </ClInclude>
     <ClInclude Include="Scenes\Blending.h">
       <Filter>Scenes\Blending</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\FaceCulling.h">
+      <Filter>Scenes\Face Culling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include "Blending.h"
 #include "Camera.h"
+#include "FaceCulling.h"
 #include "Model.h"
 #include "Shader.h"
 #include "UserInterface.h"
@@ -204,7 +204,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		Scene* scene = new Blending();
+		Scene* scene = new FaceCulling();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();

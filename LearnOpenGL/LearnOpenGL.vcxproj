@@ -92,6 +92,7 @@
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
     <ClCompile Include="Scenes\Blending.cpp" />
+    <ClCompile Include="Scenes\FaceCulling.cpp" />
     <ClCompile Include="Scenes\StencilTest.cpp" />
     <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Library\KHR\khrplatform.h" />
     <ClInclude Include="Library\STB Image\stb_image.h" />
     <ClInclude Include="Scenes\Blending.h" />
+    <ClInclude Include="Scenes\FaceCulling.h" />
     <ClInclude Include="Scenes\ModelLoading.cpp" />
     <ClInclude Include="Scenes\ModelLoading.h" />
     <ClInclude Include="Scenes\Scene.h" />
