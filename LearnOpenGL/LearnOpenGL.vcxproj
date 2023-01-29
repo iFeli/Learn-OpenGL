@@ -57,6 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -72,6 +73,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -233,8 +235,9 @@
     <None Include="Library\Assimp\vector3.inl" />
     <None Include="Resource Files\Shaders\Alpha.frag" />
     <None Include="Resource Files\Shaders\Alpha.vert" />
-    <None Include="Resource Files\Shaders\QuadTexture.frag" />
-    <None Include="Resource Files\Shaders\QuadTexture.vert" />
+    <None Include="Resource Files\Shaders\TextureInvert.frag" />
+    <None Include="Resource Files\Shaders\TextureQuad.frag" />
+    <None Include="Resource Files\Shaders\TextureQuad.vert" />
     <None Include="Resource Files\Shaders\Color.frag" />
     <None Include="Resource Files\Shaders\Color.vert" />
     <None Include="Resource Files\Shaders\Container.frag" />

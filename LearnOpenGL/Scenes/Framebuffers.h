@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "Shader.h"
 
+#include <string_view>
+
 namespace Pink
 {
 
@@ -17,10 +19,13 @@ namespace Pink
 
 	private:
 		GLuint cubeTexture;
+        GLuint floorTexture;
         GLuint fboTexture;
 
 		GLuint cubeVAO;
 		GLuint cubeVBO;
+        GLuint floorVAO;
+        GLuint floorVBO;
         GLuint quadVAO;
         GLuint quadVBO;
 
@@ -28,7 +33,7 @@ namespace Pink
         GLuint rbo;
         
         Shader colorShader;
-		Shader quadTextureShader;
+		Shader postProcessShader;
 		Shader textureShader;
 
         const float cubeVertices[180] = {
@@ -76,6 +81,16 @@ namespace Pink
              -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // Bottom-left        
         };
 
+        float floorVertices[30] = {
+             5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+            -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
+            -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+
+             5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+            -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+             5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+        };
+
         const float quadVertices[24] = { 
             // Vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
             
@@ -96,6 +111,10 @@ namespace Pink
             1.0f,  -1.0f,   1.0f, 0.0f, // Bottom-right
             1.0f,  -0.25f,  1.0f, 1.0f  // Top-right
         };
+
+        void createTexture(GLuint& texture, std::string_view filename);
+        void drawScene(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
+        void drawScenePostProcessed();
 	};
 
 }

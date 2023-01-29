@@ -16,15 +16,18 @@ namespace Pink
 	*/
 	Framebuffers::Framebuffers() :
 		cubeTexture(0),
+		floorTexture(0),
 		fboTexture(0),
 		cubeVAO(0),
 		cubeVBO(0),
+		floorVAO(0),
+		floorVBO(0),
 		quadVAO(0),
 		quadVBO(0),
 		fbo(0),
 		rbo(0),
 		colorShader(Shader("Resource Files/Shaders/Color.vert", "Resource Files/Shaders/Color.frag")),
-		quadTextureShader(Shader("Resource Files/Shaders/QuadTexture.vert", "Resource Files/Shaders/QuadTexture.frag")),
+		postProcessShader(Shader("Resource Files/Shaders/TextureQuad.vert", "Resource Files/Shaders/TextureInvert.frag")),
 		textureShader(Shader("Resource Files/Shaders/Texture.vert", "Resource Files/Shaders/Texture.frag"))
 	{
 		//
@@ -37,38 +40,8 @@ namespace Pink
 		//
 		// Textures.
 		//
-		int width = 0;
-		int height = 0;
-		int numberOfChannels = 0;
-		unsigned char* imageData = nullptr;
-
-		glGenTextures(1, &cubeTexture);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-
-		imageData = stbi_load("Resource Files/Textures/Marble.jpg", &width, &height, &numberOfChannels, 0);
-
-		if (imageData)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			std::cout << "Failed to load the cube's texture." << std::endl;
-		}
-
-		stbi_image_free(imageData);
-
-		width = 0;
-		height = 0;
-		numberOfChannels = 0;
-		imageData = nullptr;
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+		createTexture(cubeTexture, "Resource Files/Textures/Container.jpg");
+		createTexture(floorTexture, "Resource Files/Textures/Metal.png");
 
 		//
 		// Buffers.
@@ -141,14 +114,19 @@ namespace Pink
 
 	Framebuffers::~Framebuffers()
 	{
-		glDeleteFramebuffers(1, &fbo);
-
 		glDeleteTextures(1, &cubeTexture);
+		glDeleteTextures(1, &floorTexture);
 		glDeleteTextures(1, &fboTexture);
 
 		glDeleteVertexArrays(1, &cubeVAO);
-
 		glDeleteBuffers(1, &cubeVBO);
+		glDeleteVertexArrays(1, &floorVAO);
+		glDeleteBuffers(1, &floorVBO);
+		glDeleteVertexArrays(1, &quadVAO);
+		glDeleteBuffers(1, &quadVBO);
+
+		glDeleteFramebuffers(1, &fbo);
+		glDeleteRenderbuffers(1, &rbo);
 	}
 
 	/*
@@ -159,76 +137,123 @@ namespace Pink
 	void Framebuffers::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 	{
 		// Render to default framebuffer.
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_STENCIL_TEST);
-
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-		textureShader.use();
-		textureShader.setInteger("textureSampler", 0);
-
-		textureShader.setMatrix4("model", model);
-		textureShader.setMatrix4("view", view);
-		textureShader.setMatrix4("projection", projection);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubeTexture);
-
-		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+		drawScene(model, view, projection);
 
 		// Render to custom framebuffer.
 		const GLsizei framebufferWidth = WIDTH / 2;
 		const GLsizei framebufferHeight = HEIGHT / 2;
 
 		glViewport(0, 0, framebufferWidth, framebufferHeight);
-
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_STENCIL_TEST);
-
-		glClearColor(0.8f, 0.1f, 0.4f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-		colorShader.use();
-		colorShader.setVector3("color", 0.2f, 1.0f, 0.6f);
-
-		colorShader.setMatrix4("model", model);
-		colorShader.setMatrix4("view", view);
-		colorShader.setMatrix4("projection", projection);
-
-		glBindVertexArray(cubeVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
+		drawScene(model, view, projection);
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 		glViewport(0, 0, WIDTH, HEIGHT);
 
 		// Render the plane with the custom framebuffer's color attachment texture as its texture.
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		drawScenePostProcessed();
+	}
 
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_STENCIL_TEST);
+	/*
+	*
+	* Private Methods
+	*
+	*/
+	void Framebuffers::createTexture(GLuint& texture, std::string_view filename)
+	{
+		int width = 0;
+		int height = 0;
+		int numberOfChannels = 0;
+		unsigned char* imageData = nullptr;
 
-		quadTextureShader.use();
-		quadTextureShader.setInteger("textureSampler", 1);
+		// Cube.
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, fboTexture);
+		imageData = stbi_load(filename.data(), &width, &height, &numberOfChannels, 0);
 
-		glBindVertexArray(quadVAO);
+		if (imageData)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			std::cout << "Failed to load the texture." << std::endl;
+		}
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		stbi_image_free(imageData);
 
-		glBindVertexArray(0);
+		width = 0;
+		height = 0;
+		numberOfChannels = 0;
+		imageData = nullptr;
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	void Framebuffers::drawScene(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+	{
+		//
+		// Set up OpenGL.
+		//
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_STENCIL_TEST);
+
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		
+		//
+		// Draw the cubes.
+		//
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		glBindVertexArray(cubeVAO);
+
+		textureShader.use();
+		textureShader.setInteger("textureSampler", 0);
+		textureShader.setMatrix4("view", view);
+		textureShader.setMatrix4("projection", projection);
+
+		// First cube.
+		textureShader.setMatrix4("model", model);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Second cube.
+		glm::mat4 secondModel = glm::mat4(1.0f);
+		secondModel = glm::translate(secondModel, glm::vec3(2.0f, 0.0f, 2.0f));
+		textureShader.setMatrix4("model", secondModel);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void Framebuffers::drawScenePostProcessed()
+	{
+		//
+		// Set up OpenGL.
+		//
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_STENCIL_TEST);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, fboTexture);
+		glBindVertexArray(quadVAO);
+
+		postProcessShader.use();
+		postProcessShader.setInteger("textureSampler", 1);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }

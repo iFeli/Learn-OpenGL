@@ -550,10 +550,13 @@
     <None Include="Resource Files\Shaders\Alpha.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resource Files\Shaders\QuadTexture.vert">
+    <None Include="Resource Files\Shaders\TextureQuad.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="Resource Files\Shaders\QuadTexture.frag">
+    <None Include="Resource Files\Shaders\TextureQuad.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\TextureInvert.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
