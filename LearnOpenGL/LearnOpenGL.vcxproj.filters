@@ -559,5 +559,11 @@
     <None Include="Resource Files\Shaders\TextureInvert.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resource Files\Shaders\TextureGrayscale.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\TextureKernel.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -27,7 +27,7 @@ namespace Pink
 		fbo(0),
 		rbo(0),
 		colorShader(Shader("Resource Files/Shaders/Color.vert", "Resource Files/Shaders/Color.frag")),
-		postProcessShader(Shader("Resource Files/Shaders/TextureQuad.vert", "Resource Files/Shaders/TextureInvert.frag")),
+		postProcessShader(Shader("Resource Files/Shaders/TextureQuad.vert", "Resource Files/Shaders/TextureKernel.frag")),
 		textureShader(Shader("Resource Files/Shaders/Texture.vert", "Resource Files/Shaders/Texture.frag"))
 	{
 		//
@@ -63,7 +63,22 @@ namespace Pink
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBindVertexArray(0);
-		
+
+		// Floor buffers.
+		glGenVertexArrays(1, &floorVAO);
+		glBindVertexArray(floorVAO);
+
+		glGenBuffers(1, &floorVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), floorVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(positionIndex);
+		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
+		glEnableVertexAttribArray(textureIndex);
+		glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindVertexArray(0);
+
 		// Quad buffers.
 		glGenVertexArrays(1, &quadVAO);
 		glBindVertexArray(quadVAO);
@@ -167,7 +182,6 @@ namespace Pink
 		int numberOfChannels = 0;
 		unsigned char* imageData = nullptr;
 
-		// Cube.
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -205,7 +219,7 @@ namespace Pink
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
 
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.8f, 0.1f, 0.4f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		
 		//
@@ -232,6 +246,24 @@ namespace Pink
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// 
+		// Draw the floor.
+		//
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, floorTexture);
+		glBindVertexArray(floorVAO);
+
+		textureShader.use();
+		textureShader.setInteger("textureSampler", 1);
+		textureShader.setMatrix4("model", model);
+		textureShader.setMatrix4("view", view);
+		textureShader.setMatrix4("projection", projection);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}

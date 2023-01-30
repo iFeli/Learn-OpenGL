@@ -235,7 +235,9 @@
     <None Include="Library\Assimp\vector3.inl" />
     <None Include="Resource Files\Shaders\Alpha.frag" />
     <None Include="Resource Files\Shaders\Alpha.vert" />
+    <None Include="Resource Files\Shaders\TextureGrayscale.frag" />
     <None Include="Resource Files\Shaders\TextureInvert.frag" />
+    <None Include="Resource Files\Shaders\TextureKernel.frag" />
     <None Include="Resource Files\Shaders\TextureQuad.frag" />
     <None Include="Resource Files\Shaders\TextureQuad.vert" />
     <None Include="Resource Files\Shaders\Color.frag" />
