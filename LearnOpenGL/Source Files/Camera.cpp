@@ -68,7 +68,7 @@ namespace Pink {
 	*
 	*/
 
-	glm::mat4 Camera::getViewMatrix()
+	glm::mat4 Camera::getViewMatrix() const
 	{
 		return glm::lookAt(position, position + front, up);
 	}

@@ -94,6 +94,7 @@
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
     <ClCompile Include="Scenes\Blending.cpp" />
+    <ClCompile Include="Scenes\Cubemaps.cpp" />
     <ClCompile Include="Scenes\FaceCulling.cpp" />
     <ClCompile Include="Scenes\Framebuffers.cpp" />
     <ClCompile Include="Scenes\StencilTest.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Library\KHR\khrplatform.h" />
     <ClInclude Include="Library\STB Image\stb_image.h" />
     <ClInclude Include="Scenes\Blending.h" />
+    <ClInclude Include="Scenes\Cubemaps.h" />
     <ClInclude Include="Scenes\FaceCulling.h" />
     <ClInclude Include="Scenes\Framebuffers.h" />
     <ClInclude Include="Scenes\ModelLoading.cpp" />
@@ -235,6 +237,11 @@
     <None Include="Library\Assimp\vector3.inl" />
     <None Include="Resource Files\Shaders\Alpha.frag" />
     <None Include="Resource Files\Shaders\Alpha.vert" />
+    <None Include="Resource Files\Shaders\Reflection.frag" />
+    <None Include="Resource Files\Shaders\Reflection.vert" />
+    <None Include="Resource Files\Shaders\Refraction.frag" />
+    <None Include="Resource Files\Shaders\Skybox.frag" />
+    <None Include="Resource Files\Shaders\Skybox.vert" />
     <None Include="Resource Files\Shaders\TextureGrayscale.frag" />
     <None Include="Resource Files\Shaders\TextureInvert.frag" />
     <None Include="Resource Files\Shaders\TextureKernel.frag" />

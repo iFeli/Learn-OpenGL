@@ -47,7 +47,7 @@ namespace Pink
 		float yaw;
 		float zoom;
 
-		glm::mat4 getViewMatrix();
+		glm::mat4 getViewMatrix() const;
 		void processKeyboard(CameraMovement direction, float deltaTime);
 		void processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch = true);
 		void processMouseScroll(float yOffset);

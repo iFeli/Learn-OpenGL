@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "Camera.h"
-#include "Framebuffers.h"
+#include "Cubemaps.h"
 #include "Model.h"
 #include "Shader.h"
 #include "UserInterface.h"
@@ -195,16 +195,7 @@ namespace Pink
 
 	void Renderer::render()
 	{
-		// Have STBI flip images when loading from file.
-		stbi_set_flip_vertically_on_load(true);
-
-		// Clear color for the frame buffer.
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-		// Enable OpenGL depth testing.
-		glEnable(GL_DEPTH_TEST);
-
-		Scene* scene = new Framebuffers();
+		Scene* scene = new Cubemaps();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();
@@ -234,9 +225,6 @@ namespace Pink
 
 			// UI updates.
 			processUI();
-
-			// Render commands.
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Tell ImGui we're rendering a new frame and to style the UI.
 			userInterface->newFrame();
