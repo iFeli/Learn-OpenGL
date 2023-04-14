@@ -1,4 +1,4 @@
-#include "Blending.h"
+#include "AdvancedGLSL.h"
 
 #include <GLM/gtc/matrix_transform.hpp>
 #include <STB Image/stb_image.h>
@@ -14,10 +14,9 @@ namespace Pink
 	* Constructor & Destructor
 	*
 	*/
-	Blending::Blending() :
+	AdvancedGLSL::AdvancedGLSL() :
 		cubeTexture(0),
 		floorTexture(0),
-		grassTexture(0),
 		windowTexture(0),
 		cubeVAO(0),
 		floorVAO(0),
@@ -76,11 +75,11 @@ namespace Pink
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
-		else 
+		else
 		{
 			std::cout << "Failed to load the cube's texture." << std::endl;
 		}
-		
+
 		stbi_image_free(imageData);
 
 		width = 0;
@@ -109,38 +108,6 @@ namespace Pink
 		else
 		{
 			std::cout << "Failed to load the floor's texture." << std::endl;
-		}
-
-		stbi_image_free(imageData);
-
-		width = 0;
-		height = 0;
-		numberOfChannels = 0;
-		imageData = nullptr;
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// Grass texture.
-		glGenTextures(1, &grassTexture);
-		glBindTexture(GL_TEXTURE_2D, grassTexture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		
-		stbi_set_flip_vertically_on_load(false);
-
-		imageData = stbi_load("Resource Files/Textures/Grass.png", &width, &height, &numberOfChannels, 0);
-
-		if (imageData)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
-			std::cout << "Failed to load the grass texture." << std::endl;
 		}
 
 		stbi_image_free(imageData);
@@ -230,7 +197,7 @@ namespace Pink
 		glBindVertexArray(planeVAO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), grassVertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(windowVertices), windowVertices, GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(positionIndex);
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
@@ -241,11 +208,10 @@ namespace Pink
 		glBindVertexArray(0);
 	}
 
-	Blending::~Blending()
+	AdvancedGLSL::~AdvancedGLSL()
 	{
 		glDeleteTextures(1, &cubeTexture);
 		glDeleteTextures(1, &floorTexture);
-		glDeleteTextures(1, &grassTexture);
 		glDeleteTextures(1, &windowTexture);
 
 		glDeleteVertexArrays(1, &cubeVAO);
@@ -262,7 +228,7 @@ namespace Pink
 	* Public Methods
 	*
 	*/
-	void Blending::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
+	void AdvancedGLSL::draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -295,32 +261,9 @@ namespace Pink
 
 		glBindVertexArray(cubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+
 		glBindVertexArray(0);
 
-		// Draw the grass.
-		/*alphaShader.use();
-		alphaShader.setInteger("textureSampler", 2);
-
-		alphaShader.setMatrix4("view", view);
-		alphaShader.setMatrix4("projection", projection);
-
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, grassTexture);
-
-		glBindVertexArray(planeVAO);
-
-		for (unsigned int i = 0; i < planePositions.size(); i++)
-		{
-			glm::mat4 planeModel = glm::mat4(1.0f);
-			planeModel = glm::translate(planeModel, planePositions[i]);
-			alphaShader.setMatrix4("model", planeModel);
-
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		}
-
-		glBindVertexArray(0);*/
-		
 		// Draw the windows.
 		textureShader.use();
 		textureShader.setInteger("textureSampler", 3);
@@ -342,7 +285,7 @@ namespace Pink
 		}
 
 		for (std::map<float, glm::vec3>::reverse_iterator iterator = sortedPlanePositions.rbegin();
-			iterator != sortedPlanePositions.rend(); 
+			iterator != sortedPlanePositions.rend();
 			iterator++)
 		{
 			glm::mat4 planeModel = glm::mat4(1.0f);

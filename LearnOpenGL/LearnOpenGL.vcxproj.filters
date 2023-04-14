@@ -76,6 +76,9 @@
     <Filter Include="Scenes\Cubemaps">
       <UniqueIdentifier>{87814dfa-6b46-4ef4-a0f2-dd87fc2f14e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenes\Advanced GLSL">
+      <UniqueIdentifier>{247133de-1f5b-46a0-bb94-bd6a645d275f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Library\GLAD\glad.c">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="Scenes\Cubemaps.cpp">
       <Filter>Scenes\Cubemaps</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\AdvancedGLSL.cpp">
+      <Filter>Scenes\Advanced GLSL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="Scenes\Cubemaps.h">
       <Filter>Scenes\Cubemaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\AdvancedGLSL.h">
+      <Filter>Scenes\Advanced GLSL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -93,6 +93,7 @@
     <ClCompile Include="Library\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Library\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Library\STB Image\stb_image.cpp" />
+    <ClCompile Include="Scenes\AdvancedGLSL.cpp" />
     <ClCompile Include="Scenes\Blending.cpp" />
     <ClCompile Include="Scenes\Cubemaps.cpp" />
     <ClCompile Include="Scenes\FaceCulling.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Library\ImGui\imstb_truetype.h" />
     <ClInclude Include="Library\KHR\khrplatform.h" />
     <ClInclude Include="Library\STB Image\stb_image.h" />
+    <ClInclude Include="Scenes\AdvancedGLSL.h" />
     <ClInclude Include="Scenes\Blending.h" />
     <ClInclude Include="Scenes\Cubemaps.h" />
     <ClInclude Include="Scenes\FaceCulling.h" />
