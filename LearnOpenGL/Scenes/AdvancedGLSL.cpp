@@ -19,10 +19,7 @@ namespace Pink
 		cubeVAO(0),
 		cubeVBO(0),
 		matricesUBO(0),
-		redShader(Shader("Resource Files/Shaders/UniformBufferObjects.vert", "Resource Files/Shaders/UniformBufferObjects.frag")),
-		greenShader(Shader("Resource Files/Shaders/UniformBufferObjects.vert", "Resource Files/Shaders/UniformBufferObjects.frag")),
-		blueShader(Shader("Resource Files/Shaders/UniformBufferObjects.vert", "Resource Files/Shaders/UniformBufferObjects.frag")),
-		yellowShader(Shader("Resource Files/Shaders/UniformBufferObjects.vert", "Resource Files/Shaders/UniformBufferObjects.frag"))
+		shader(Shader("Resource Files/Shaders/UniformBufferObjects.vert", "Resource Files/Shaders/UniformBufferObjects.frag"))
 	{
 		//
 		// OpenGL
@@ -53,15 +50,9 @@ namespace Pink
 		glBindVertexArray(0);
 
 		// Uniform buffer.
-		GLuint uniformBlockIndexRed = glGetUniformBlockIndex(redShader.id, "Matrices");
-		GLuint uniformBlockIndexGreen = glGetUniformBlockIndex(greenShader.id, "Matrices");
-		GLuint uniformBlockIndexBlue = glGetUniformBlockIndex(blueShader.id, "Matrices");
-		GLuint uniformBlockIndexYellow = glGetUniformBlockIndex(yellowShader.id, "Matrices");
+		GLuint uniformBlockIndexRed = glGetUniformBlockIndex(shader.id, "Matrices");
 
-		glUniformBlockBinding(redShader.id, uniformBlockIndexRed, 0);
-		glUniformBlockBinding(greenShader.id, uniformBlockIndexGreen, 0);
-		glUniformBlockBinding(blueShader.id, uniformBlockIndexBlue, 0);
-		glUniformBlockBinding(yellowShader.id, uniformBlockIndexYellow, 0);
+		glUniformBlockBinding(shader.id, uniformBlockIndexRed, 0);
 
 		glGenBuffers(1, &matricesUBO);
 
@@ -103,36 +94,36 @@ namespace Pink
 		// Red Cube.
 		glm::mat4 translatedModel = glm::translate(model, glm::vec3(-1.0f, 2.0f, 5.0f));
 
-		redShader.use();
-		redShader.setVector3("color", 1.0f, 0.0f, 0.0f);
-		redShader.setMatrix4("model", translatedModel);
+		shader.use();
+		shader.setVector3("color", 1.0f, 0.0f, 0.0f);
+		shader.setMatrix4("model", translatedModel);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// Green Cube.
 		translatedModel = glm::translate(model, glm::vec3(1.0f, 2.0f, 5.0f));
 
-		greenShader.use();
-		greenShader.setVector3("color", 0.0f, 1.0f, 0.0f);
-		greenShader.setMatrix4("model", translatedModel);
+		shader.use();
+		shader.setVector3("color", 0.0f, 1.0f, 0.0f);
+		shader.setMatrix4("model", translatedModel);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// Blue cube.
 		translatedModel = glm::translate(model, glm::vec3(1.0f, 0.0f, 5.0f));
 
-		blueShader.use();
-		blueShader.setVector3("color", 0.0f, 0.0f, 1.0f);
-		blueShader.setMatrix4("model", translatedModel);
+		shader.use();
+		shader.setVector3("color", 0.0f, 0.0f, 1.0f);
+		shader.setMatrix4("model", translatedModel);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// Yellow cube.
 		translatedModel = glm::translate(model, glm::vec3(-1.0f, 0.0f, 5.0f));
 
-		yellowShader.use();
-		yellowShader.setVector3("color", 1.0f, 1.0f, 0.0f);
-		yellowShader.setMatrix4("model", translatedModel);
+		shader.use();
+		shader.setVector3("color", 1.0f, 1.0f, 0.0f);
+		shader.setMatrix4("model", translatedModel);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 

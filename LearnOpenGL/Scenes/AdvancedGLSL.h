@@ -23,10 +23,7 @@ namespace Pink
 		GLuint cubeVBO;
 		GLuint matricesUBO;
 
-		Shader redShader;
-		Shader greenShader;
-		Shader blueShader;
-		Shader yellowShader;
+        Shader shader;
 
         float cubeVertices[108] = {
             -0.5f, -0.5f, -0.5f,
