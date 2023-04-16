@@ -19,87 +19,58 @@ namespace Pink
 		void draw(const Camera& camera, const glm::mat4 model, const glm::mat4 view, const glm::mat4 projection);
 
 	private:
-		GLuint cubeTexture;
-		GLuint floorTexture;
-		GLuint windowTexture;
-
 		GLuint cubeVAO;
-		GLuint floorVAO;
-		GLuint planeVAO;
-
 		GLuint cubeVBO;
-		GLuint floorVBO;
-		GLuint planeVBO;
+		GLuint matricesUBO;
 
-		Shader alphaShader;
-		Shader textureShader;
+		Shader redShader;
+		Shader greenShader;
+		Shader blueShader;
+		Shader yellowShader;
 
-		std::vector<glm::vec3> planePositions;
+        float cubeVertices[108] = {
+            -0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+            -0.5f,  0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
 
-		float cubeVertices[180] = {
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f, -0.5f,  0.5f,
 
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
 
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
 
-			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f,
+            -0.5f, -0.5f,  0.5f,
+            -0.5f, -0.5f, -0.5f,
 
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		};
-
-		float floorVertices[30] = {
-			-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
-			-5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
-			 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-
-			-5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
-			 5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-			 5.0f, -0.5f, -5.0f,  2.0f, 2.0f
-		};
-
-		float windowVertices[30] = {
-			0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
-			0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
-			1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
-
-			0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
-			1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
-			1.0f,  0.5f,  0.0f,  1.0f,  0.0f
-		};
+            -0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f, -0.5f,
+        };
 	};
 
 }

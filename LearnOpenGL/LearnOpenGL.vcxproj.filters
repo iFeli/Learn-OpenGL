@@ -598,5 +598,11 @@
     <None Include="Resource Files\Shaders\Refraction.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resource Files\Shaders\UniformBufferObjects.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resource Files\Shaders\UniformBufferObjects.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

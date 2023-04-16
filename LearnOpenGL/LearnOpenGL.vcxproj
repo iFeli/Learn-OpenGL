@@ -259,6 +259,8 @@
     <None Include="Resource Files\Shaders\Model.vert" />
     <None Include="Resource Files\Shaders\Texture.frag" />
     <None Include="Resource Files\Shaders\Texture.vert" />
+    <None Include="Resource Files\Shaders\UniformBufferObjects.vert" />
+    <None Include="Resource Files\Shaders\UniformBufferObjects.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
