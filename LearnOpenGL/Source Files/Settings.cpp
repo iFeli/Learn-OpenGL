@@ -12,6 +12,7 @@ namespace Pink
 		maximumVertexAttributes(maximumVertexAttributes),
 		fps(0), 
 		frameTime(0.0f),
+		resetCamera(false),
 		wireframe(false)
 	{
 

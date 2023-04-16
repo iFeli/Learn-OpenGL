@@ -178,6 +178,13 @@ namespace Pink
 	void Renderer::processUI()
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, settings->wireframe ? GL_LINE : GL_FILL);
+
+		if (settings->resetCamera)
+		{
+			settings->resetCamera = false;
+
+			camera = Camera(glm::vec3(0.0f, 1.0f, 10.0f));
+		}
 	}
 
 	/*
@@ -287,6 +294,11 @@ namespace Pink
 			enableCursor = !enableCursor;
 
 			glfwSetInputMode(window, GLFW_CURSOR, enableCursor ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+		}
+
+		if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		{
+			settings->resetCamera = true;
 		}
 	}
 

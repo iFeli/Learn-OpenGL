@@ -15,6 +15,7 @@ namespace Pink
 
 		int fps;
 		float frameTime;
+		bool resetCamera;
 		bool wireframe;
 	};
 

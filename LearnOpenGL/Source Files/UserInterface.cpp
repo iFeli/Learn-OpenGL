@@ -85,6 +85,13 @@ namespace Pink
 		if (ImGui::Begin("OpenGL Settings"))
 		{
 			ImGui::Checkbox("Wireframe", &(settings->wireframe));
+
+			ImGui::Spacing();
+			
+			if (ImGui::Button("Reset Camera"))
+			{
+				settings->resetCamera = true;
+			}
 		}
 
 		ImGui::End();
