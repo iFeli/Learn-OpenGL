@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ADVANCED_GLSL_H
 #define ADVANCED_GLSL_H
 

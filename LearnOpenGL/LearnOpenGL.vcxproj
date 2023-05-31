@@ -98,6 +98,7 @@
     <ClCompile Include="Scenes\Cubemaps.cpp" />
     <ClCompile Include="Scenes\FaceCulling.cpp" />
     <ClCompile Include="Scenes\Framebuffers.cpp" />
+    <ClCompile Include="Scenes\GeometryShader.cpp" />
     <ClCompile Include="Scenes\StencilTest.cpp" />
     <ClCompile Include="Source Files\Camera.cpp" />
     <ClCompile Include="Source Files\main.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Scenes\Cubemaps.h" />
     <ClInclude Include="Scenes\FaceCulling.h" />
     <ClInclude Include="Scenes\Framebuffers.h" />
+    <ClInclude Include="Scenes\GeometryShader.h" />
     <ClInclude Include="Scenes\ModelLoading.cpp" />
     <ClInclude Include="Scenes\ModelLoading.h" />
     <ClInclude Include="Scenes\Scene.h" />
@@ -239,6 +241,9 @@
     <None Include="Library\Assimp\vector3.inl" />
     <None Include="Resource Files\Shaders\Alpha.frag" />
     <None Include="Resource Files\Shaders\Alpha.vert" />
+    <None Include="Resource Files\Shaders\GeometryShader.frag" />
+    <None Include="Resource Files\Shaders\GeometryShader.geom" />
+    <None Include="Resource Files\Shaders\GeometryShader.vert" />
     <None Include="Resource Files\Shaders\Reflection.frag" />
     <None Include="Resource Files\Shaders\Reflection.vert" />
     <None Include="Resource Files\Shaders\Refraction.frag" />

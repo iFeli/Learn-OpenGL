@@ -150,6 +150,9 @@
     <ClCompile Include="Scenes\AdvancedGLSL.cpp">
       <Filter>Scenes\Advanced GLSL</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\GeometryShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header Files\Renderer.h">
@@ -503,6 +506,9 @@
     <ClInclude Include="Scenes\AdvancedGLSL.h">
       <Filter>Scenes\Advanced GLSL</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\GeometryShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource Files\Shaders\Container.frag">
@@ -604,5 +610,8 @@
     <None Include="Resource Files\Shaders\UniformBufferObjects.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resource Files\Shaders\GeometryShader.vert" />
+    <None Include="Resource Files\Shaders\GeometryShader.frag" />
+    <None Include="Resource Files\Shaders\GeometryShader.geom" />
   </ItemGroup>
 </Project>

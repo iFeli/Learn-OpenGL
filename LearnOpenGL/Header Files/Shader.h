@@ -15,6 +15,7 @@ namespace Pink
 		GLuint id;
 
 		Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
+		Shader(const char* vertexShaderPath, const char* geometryShaderPath, const char* fragmentShaderPath);
 		~Shader();
 
 		void use();

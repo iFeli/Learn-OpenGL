@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include "AdvancedGLSL.h"
 #include "Camera.h"
+#include "GeometryShader.h"
 #include "Model.h"
 #include "Shader.h"
 #include "UserInterface.h"
@@ -211,7 +211,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		Scene* scene = new AdvancedGLSL();
+		Scene* scene = new GeometryShader();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();
