@@ -254,6 +254,11 @@ namespace Pink
 		glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
+	void Shader::setVector2(const std::string& name, const glm::vec2& value) const
+	{
+		glUniform2fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]);
+	}
+
 	void Shader::setVector3(const std::string& name, float x, float y, float z) const
 	{
 		glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z);

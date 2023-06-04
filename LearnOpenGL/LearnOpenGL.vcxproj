@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scenes\Instancing.cpp" />
     <ClCompile Include="Library\GLAD\glad.c" />
     <ClCompile Include="Library\ImGui\imgui.cpp" />
     <ClCompile Include="Library\ImGui\imgui_demo.cpp" />
@@ -120,6 +121,8 @@
     <ClInclude Include="Header Files\UserInterface.h" />
     <ClInclude Include="Header Files\Variables.h" />
     <ClInclude Include="Header Files\Vertex.h" />
+    <ClInclude Include="Resource Files\Shaders\Instancing.vert" />
+    <ClInclude Include="Scenes\Instancing.h" />
     <ClInclude Include="Library\Assimp\aabb.h" />
     <ClInclude Include="Library\Assimp\ai_assert.h" />
     <ClInclude Include="Library\Assimp\anim.h" />
@@ -244,6 +247,7 @@
     <None Include="Resource Files\Shaders\GeometryShader.frag" />
     <None Include="Resource Files\Shaders\GeometryShader.geom" />
     <None Include="Resource Files\Shaders\GeometryShader.vert" />
+    <None Include="Resource Files\Shaders\Instancing.frag" />
     <None Include="Resource Files\Shaders\Reflection.frag" />
     <None Include="Resource Files\Shaders\Reflection.vert" />
     <None Include="Resource Files\Shaders\Refraction.frag" />

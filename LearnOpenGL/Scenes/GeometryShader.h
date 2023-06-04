@@ -1,11 +1,8 @@
-
 #ifndef GEOMETRY_SHADER_H
 #define GEOMETRY_SHADER_H
 
 #include "Scene.h"
 #include "Shader.h"
-
-#include <vector>
 
 namespace Pink
 {
