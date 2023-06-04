@@ -18,10 +18,9 @@ namespace Pink
 	private:
 		GLuint quadVAO;
 		GLuint quadVBO;
+		GLuint translationsVBO;
 
 		Shader shader;
-
-		glm::vec2 translations[100];
 
 		float quadVertices[30] = {
 			// Positions     // Colors
