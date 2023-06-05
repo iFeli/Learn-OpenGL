@@ -81,6 +81,7 @@ namespace Pink
 	{
 		glDeleteVertexArrays(1, &quadVAO);
 		glDeleteBuffers(1, &quadVBO);
+		glDeleteBuffers(1, &translationsVBO);
 	}
 
 	/*

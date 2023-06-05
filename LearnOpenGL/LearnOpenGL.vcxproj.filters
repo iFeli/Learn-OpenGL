@@ -153,6 +153,12 @@
     <ClCompile Include="Scenes\GeometryShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Instancing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MSAA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header Files\Renderer.h">
@@ -509,6 +515,13 @@
     <ClInclude Include="Scenes\GeometryShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Resource Files\Shaders\Instancing.vert" />
+    <ClInclude Include="Scenes\Instancing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MSAA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource Files\Shaders\Container.frag">
@@ -613,5 +626,6 @@
     <None Include="Resource Files\Shaders\GeometryShader.vert" />
     <None Include="Resource Files\Shaders\GeometryShader.frag" />
     <None Include="Resource Files\Shaders\GeometryShader.geom" />
+    <None Include="Resource Files\Shaders\Instancing.frag" />
   </ItemGroup>
 </Project>

@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scenes\MSAA.cpp" />
     <ClCompile Include="Scenes\Instancing.cpp" />
     <ClCompile Include="Library\GLAD\glad.c" />
     <ClCompile Include="Library\ImGui\imgui.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Header Files\UserInterface.h" />
     <ClInclude Include="Header Files\Variables.h" />
     <ClInclude Include="Header Files\Vertex.h" />
+    <ClInclude Include="Scenes\MSAA.h" />
     <ClInclude Include="Resource Files\Shaders\Instancing.vert" />
     <ClInclude Include="Scenes\Instancing.h" />
     <ClInclude Include="Library\Assimp\aabb.h" />

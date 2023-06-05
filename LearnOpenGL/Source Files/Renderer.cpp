@@ -8,8 +8,8 @@
 #include <iostream>
 
 #include "Camera.h"
-#include "Instancing.h"
 #include "Model.h"
+#include "MSAA.h"
 #include "Shader.h"
 #include "UserInterface.h"
 
@@ -58,6 +58,7 @@ namespace Pink
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_SAMPLES, 4);
 
 		window = glfwCreateWindow(width, height, "Learn OpenGL", NULL, NULL);
 
@@ -211,7 +212,7 @@ namespace Pink
 		// Enable OpenGL depth testing.
 		glEnable(GL_DEPTH_TEST);
 
-		Scene* scene = new Instancing();
+		Scene* scene = new MSAA();
 
 		// FPS and frame time calculations.
 		double lastTime = glfwGetTime();
